@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| Team ID | *[your Team ID]* |
+| Team ID | AIVVC-2026-B3T7A |
 | Founder | Moise Tchivwila |
 | Venture | AquaCascade AI |
-| Submitted | 2026-05-17 |
+| Submitted | 2026-06-20 |
 | Entry # | 2 |
 | Type | Methodology rigor — paired A/B testing |
 
