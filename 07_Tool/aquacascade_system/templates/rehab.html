@@ -1,0 +1,132 @@
+{% extends "base.html" %}{% block body %}
+{% macro n(v) %}{{ "{:,}".format(v or 0) }}{% endmacro %}
+
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Capital planning</div>
+  <h1>Rehabilitation plan</h1>
+  <p class="sub">Convert confirmed Lead and Galvanized-Requiring-
+   Replacement findings into a budgeted, equity-aware replacement plan.</p>
+ </div>
+ <div class="hero-actions">
+  <a class="btn ghost" href="{{ url_for('web.export', name='rehab_plan') }}">Export latest plan</a>
+ </div>
+</header>
+
+<section class="card planning-card"><form method="post">
+ <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+ <div class="planning-grid">
+  <div>
+   <h2>Plan Inputs</h2>
+   <p class="muted">Costs and horizon are explicit assumptions, so the
+    plan is transparent and easy to rerun.</p>
+  </div>
+  <div>
+   <label>Annual capital budget (USD) *</label>
+   <input name="annual_budget" required
+    value="{{ form.get('annual_budget','1000000') }}">
+  </div>
+  <div>
+   <label>Compliance horizon (years)</label>
+   <input name="horizon" value="{{ form.get('horizon','10') }}">
+  </div>
+  <div>
+   <label>Cost per line if not recorded (USD)</label>
+   <input name="default_cost" value="{{ form.get('default_cost','4700') }}">
+  </div>
+ </div>
+ <div class="form-actions"><button class="btn" type="submit">Build plan</button></div>
+</form></section>
+
+<section class="dashboard-grid lifecycle-dashboard">
+ <div class="card lifecycle-card">
+  <div class="card-head">
+   <div><h2>Rehabilitation Readiness</h2>
+    <p class="muted">This view separates confirmed replacement backlog from
+     long-term renewal risk. Asset age is available only for imported
+     utility line records.</p></div>
+   <a class="btn ghost" href="{{ url_for('web.export', name='asset_lifecycle') }}">Export asset readiness</a>
+  </div>
+  <div class="lifecycle-stats">
+   <div><b>{{ n(lifecycle.replacement_candidates) }}</b><span>Lead / GRR imported assets</span></div>
+   <div><b>{{ n(lifecycle.replacement_missing_age) }}</b><span>Lead / GRR missing age</span></div>
+   <div><b>{{ n(lifecycle.nonlead_overdue) }}</b><span>Non-lead past service life</span></div>
+   <div><b>{{ n(lifecycle.due_5_years) }}</b><span>Due within 5 years</span></div>
+  </div>
+ </div>
+ <aside class="card ops-card asset-gap-card">
+  <h2>Planning Assumption</h2>
+  <p class="muted">When a record does not provide service life, renewal
+   calculations use the explicit {{ lifecycle.default_service_life_years }}-year
+   assumption. Imported expected_service_life_years overrides that default
+   for the asset.</p>
+ </aside>
+</section>
+
+{% if plan and plan.get('error') %}
+ <div class="flash">{{ plan.error }}</div>
+{% elif plan %}{% set s=plan.summary %}{% set e=plan.exposure_years %}{% set q=plan.equity %}
+<section class="overview-grid">
+ <div class="kpi"><b>{{ n(s.n_lines) }}</b><span>Lines scheduled</span></div>
+ <div class="kpi"><b>${{ n(s.total_cost|int) }}</b><span>Total cost</span></div>
+ <div class="kpi"><b>{{ s.years_needed_at_budget }}</b><span>Years at budget</span></div>
+ <div class="kpi"><b>{{ q.pct_disadvantaged_by_mid_horizon }}%</b><span>Equity by mid-horizon</span></div>
+</section>
+
+<section class="dashboard-grid">
+ <div class="card">
+  <div class="card-head">
+   <div><h2>Compliance & Feasibility</h2>
+    <p class="muted">At ${{ n(s.annual_budget|int) }} per year across
+     a {{ s.horizon }} year horizon.</p></div>
+   {% if s.feasible_within_horizon %}
+    <span class="badge b-good">On track</span>
+   {% else %}
+    <span class="badge b-lead">Needs more budget</span>
+   {% endif %}
+  </div>
+  {% if not s.feasible_within_horizon %}
+   <p class="muted">Minimum annual budget for the horizon:
+    <b>${{ n(s.min_budget_for_horizon|int) }}</b>. Lines past deadline:
+    <b>{{ n(s.lines_past_deadline) }}</b>.</p>
+  {% endif %}
+  <div class="timeline">
+   {% for y in plan.per_year %}
+   <div class="timeline-row">
+    <b>Year {{ y.year }}</b>
+    <div class="timeline-track"><span style="width:{{ y.cum_pct_complete }}%"></span></div>
+    <span>{{ y.cum_pct_complete }}%</span>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+ <aside class="card ops-card">
+  <h2>Optimization Signal</h2>
+  <div class="readiness-list">
+   <div><b>{{ n(e.optimized) }}</b><span>optimized lead-exposure-years</span></div>
+   <div><b>{{ n(e.oldest_first) }}</b><span>oldest-first exposure-years</span></div>
+   <div><b>{{ e.pct_better_than_oldest_first }}%</b><span>better than oldest-first</span></div>
+  </div>
+ </aside>
+</section>
+
+<section class="card">
+ <div class="card-head"><div><h2>Year-By-Year Plan</h2>
+  <p class="muted">Replacement workload and cumulative completion by year.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.export', name='rehab_plan') }}">Export plan CSV</a></div>
+ <div class="tablewrap"><table>
+  <tr><th>Year</th><th>Lines</th><th>Cost</th>
+   <th>Cumulative complete</th><th>Disadvantaged complete</th></tr>
+  {% for y in plan.per_year %}<tr><td><b>{{ y.year }}</b></td>
+   <td>{{ n(y.n_lines) }}</td><td>${{ n(y.cost|int) }}</td>
+   <td>{{ y.cum_pct_complete }}%</td>
+   <td>{{ y.cum_pct_disadvantaged_complete }}%</td></tr>{% endfor %}
+ </table></div>
+</section>
+{% else %}
+<section class="card empty-state-panel">
+ <div class="empty">Build a plan after confirmed Lead or GRR inspections
+  are present in the register.</div>
+</section>
+{% endif %}
+{% endblock %}

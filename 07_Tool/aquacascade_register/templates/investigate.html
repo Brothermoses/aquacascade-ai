@@ -1,0 +1,66 @@
+{% extends "base.html" %}{% block body %}
+<h1>Investigate line {{ line['service_line_id'] }}</h1>
+<div class="card">
+ <p class="muted">
+  PWSID <b>{{ line['pwsid'] or '—' }}</b> &nbsp;|&nbsp;
+  Location <b>{{ line['location'] or '—' }}</b> &nbsp;|&nbsp;
+  Model system priority:
+  {% if rk %}rank <b>{{ rk }}</b>, P(lead-rich) <b>{{ '%.2f'|format(p) }}</b>
+   <span class="pill {{ 'hi' if lab=='High' else 'lo' }}">{{ lab }}</span>
+   <br><span class="muted">Prediction is system-level (not per-line);
+   your field result is the ground truth that retrains it.</span>
+  {% else %}<span class="muted">no model priority for this PWSID</span>{% endif %}
+ </p>
+</div>
+<form method="post"><div class="card"><div class="grid">
+ <div>
+  <label>System-owned (utility-side) material *</label>
+  <select name="system_side_material" required>
+   <option value="">— select —</option>
+   {% for m in S.MATERIALS %}<option {{ 'selected' if prev and prev['system_side_material']==m }}>{{ m }}</option>{% endfor %}
+  </select>
+  <label>Customer-owned material *</label>
+  <select name="customer_side_material" required>
+   <option value="">— select —</option>
+   {% for m in S.MATERIALS %}<option {{ 'selected' if prev and prev['customer_side_material']==m }}>{{ m }}</option>{% endfor %}
+  </select>
+  <label>Basis of classification *</label>
+  <select name="basis_of_classification" required>
+   <option value="">— select —</option>
+   {% for b in S.BASES %}<option {{ 'selected' if prev and prev['basis_of_classification']==b }}>{{ b }}</option>{% endfor %}
+  </select>
+  <label>Investigation method *</label>
+  <select name="investigation_method" required>
+   <option value="">— select —</option>
+   {% for x in S.INVESTIGATION_METHODS %}<option {{ 'selected' if prev and prev['investigation_method']==x }}>{{ x }}</option>{% endfor %}
+  </select>
+ </div>
+ <div>
+  <label>Investigation date *</label>
+  <input type="date" name="investigation_date"
+   value="{{ prev['investigation_date'] if prev else '' }}" required>
+  <label>Install year (if known)</label>
+  <input name="install_year" value="{{ prev['install_year'] if prev else default_iy }}"
+   placeholder="e.g. 1968">
+  <label>Inspector</label>
+  <input name="inspector" value="{{ prev['inspector'] if prev else '' }}">
+  <label>Investigation cost (USD)</label>
+  <input name="investigation_cost"
+   value="{{ prev['investigation_cost'] if prev else '' }}" placeholder="e.g. 200">
+  <label><input type="checkbox" name="disadvantaged_community_flag"
+   style="width:auto" {{ 'checked' if prev and prev['disadvantaged_community_flag']=='Y' }}>
+   &nbsp;Disadvantaged community (LCRI priority)</label>
+ </div>
+</div>
+ <label>Notes</label>
+ <textarea name="notes" rows="2">{{ prev['notes'] if prev else '' }}</textarea>
+ <label>Photo / evidence reference</label>
+ <input name="photo_ref" value="{{ prev['photo_ref'] if prev else '' }}"
+  placeholder="file name or asset link">
+ <p class="muted">Overall LCRR classification is computed from the two
+  portions (Lead &gt; Galvanized-Requiring-Replacement &gt; Unknown &gt;
+  Non-lead).</p>
+ <br><button class="btn" type="submit">Save investigation</button>
+ &nbsp;<a href="/worklist">Cancel</a>
+</div></form>
+{% endblock %}

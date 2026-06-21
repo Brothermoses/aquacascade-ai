@@ -1,0 +1,14 @@
+[17:33:33] Loading 2026Q1 service-line inventory (Community, Active)
+[17:33:33]   systems: 49,387;  lead+galv lines (must replace): 2,958,307;  unknown lines: 22,533,658
+[17:33:33] Loading measured PB90 lead samples (exposure severity)
+[17:33:35]   systems with a lead sample: 29,953
+[17:33:36] RESULTS
+[17:33:36]   national mandated lead+galv lines: 2,958,307
+[17:33:36]   national 'unknown' lines to investigate: 22,533,658
+[17:33:36]   est. replacement cost @ $4,700/line: $16.7B
+[17:33:36]   spend to cut 80% exposure - AquaCascade (exposure/$ optimized): $10.36B
+[17:33:36]   spend to cut 80% exposure - Most lead lines first (common practice): $10.81B
+[17:33:36]   spend to cut 80% exposure - Largest population first: $12.36B
+[17:33:36]   spend to cut 80% exposure - Unordered (as-reported): $12.57B
+[17:33:36]   optimized vs most-lines-first: 4.2% less spend for the same 80% public-health exposure reduction
+[17:33:36]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\lsl_optimizer_results.png

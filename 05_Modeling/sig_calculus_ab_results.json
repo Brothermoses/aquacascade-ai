@@ -1,0 +1,21 @@
+{
+  "depth": 3,
+  "cv": "RepeatedStratifiedKFold 5x5 (25 paired splits)",
+  "ito_vs_strat_feature_rel_L2_median": 0.022588408951097788,
+  "stratonovich": {
+    "sig_features": 84,
+    "lasso_selected": 66,
+    "roc_auc_mean": 0.6818177063271159,
+    "roc_auc_std": 0.005693132866609614
+  },
+  "ito": {
+    "sig_features": 84,
+    "lasso_selected": 76,
+    "roc_auc_mean": 0.6819418575591025,
+    "roc_auc_std": 0.006545265547302815
+  },
+  "paired_delta_ito_minus_strat_mean": 0.00012415123198662227,
+  "paired_delta_std": 0.0025613976234291308,
+  "pct_splits_ito_beats_strat": 0.44,
+  "verdict": "statistically indistinguishable on this data -> keep Stratonovich on principled grounds (shuffle identity, reparam-invariance)"
+}

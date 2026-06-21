@@ -1,0 +1,80 @@
+{% extends "base.html" %}{% block body %}
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Data intake</div>
+  <h1>Import service-line inventory</h1>
+  <p class="sub">Bring utility-owned line data into the national triage
+   workflow without fabricating private pipe locations.</p>
+ </div>
+ <div class="hero-actions">
+  <a class="btn ghost" href="{{ url_for('web.guide') }}">Review workflow</a>
+ </div>
+</header>
+
+<section class="dashboard-grid">
+ <div class="card import-card">
+  <h2>Upload File</h2>
+  <form method="post" enctype="multipart/form-data">
+   <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+   <label>Utility service-line list (CSV or XLSX)</label>
+   <input type="file" name="file" accept=".csv,.xlsx,.xls" required>
+   <div class="form-actions">
+    <button class="btn" type="submit">Import inventory</button>
+   </div>
+  </form>
+ </div>
+ <aside class="card ops-card">
+  <h2>Import Contract</h2>
+  <div class="readiness-list">
+   <div><b>Required</b><span>service_line_id, line_id, or asset_id</span></div>
+   <div><b>Recommended</b><span>pwsid, location, latitude, longitude, geometry</span></div>
+   <div><b>Lifecycle</b><span>install_year, expected_service_life_years, replacement_year</span></div>
+   <div><b>Evidence</b><span>verification_method, evidence_source, confidence_score</span></div>
+  </div>
+ </aside>
+</section>
+
+<section class="card lifecycle-card">
+ <div class="card-head">
+  <div><h2>Lifecycle Import Fields</h2>
+   <p class="muted">These columns make imported records useful for capital
+    planning, inspections, and renewal work orders.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.export', name='asset_lifecycle') }}">Export current gaps</a>
+ </div>
+ <div class="field-chip-grid">
+  <code>install_year</code>
+  <code>expected_service_life_years</code>
+  <code>replacement_year</code>
+  <code>diameter_in</code>
+  <code>length_ft</code>
+  <code>ownership_side</code>
+  <code>verification_method</code>
+  <code>evidence_source</code>
+  <code>confidence_score</code>
+ </div>
+ <div class="data-contract-grid">
+  <div><b>Age</b><span>install_year, expected_service_life_years,
+   replacement_year</span></div>
+  <div><b>Pipe</b><span>current_status, diameter_in, length_ft,
+   ownership_side</span></div>
+  <div><b>Location</b><span>latitude, longitude, WKT, GeoJSON, or a
+   geometry column</span></div>
+  <div><b>Proof</b><span>verification_method, evidence_source, confidence_score</span></div>
+ </div>
+</section>
+
+<section class="card">
+ <h2>Supported Geometry</h2>
+ <div class="role-strip">
+  <div><b>Coordinates</b>
+   <p class="muted"><code>latitude</code> and <code>longitude</code> columns
+    become points on the map.</p></div>
+  <div><b>WKT</b>
+   <p class="muted"><code>POINT(lon lat)</code> and
+    <code>LINESTRING(lon lat, lon lat)</code> become live map features.</p></div>
+  <div><b>GeoJSON</b>
+   <p class="muted">Point, LineString, and MultiLineString geometry can be
+    stored in the <code>geometry</code> column.</p></div>
+ </div>
+</section>
+{% endblock %}

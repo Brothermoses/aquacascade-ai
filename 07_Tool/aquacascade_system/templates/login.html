@@ -1,0 +1,34 @@
+{% extends "base.html" %}{% block body %}
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Secure access</div>
+  <h1>Sign in to AquaCascade</h1>
+  <p class="sub">Dispatchers, inspectors, and replacement crews each get
+   a distinct workspace from the same operating system.</p>
+ </div>
+</header>
+
+<section class="dashboard-grid">
+ <div class="card import-card">
+  <h2>Access Token</h2>
+  <form method="post">
+   <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+   <label>Authorized token</label>
+   <input name="token" autofocus autocomplete="off"
+    placeholder="your authorized token">
+   <div class="form-actions"><button class="btn" type="submit">Sign in</button></div>
+  </form>
+ </div>
+ {% if demo %}
+ <aside class="card ops-card">
+  <h2>Demo Logins</h2>
+  <div class="tablewrap"><table><tr><th>Role</th><th>Token</th></tr>
+   {% for r,t in demo.items() %}<tr><td>{{ r }}</td>
+    <td><code>{{ t }}</code></td></tr>{% endfor %}</table></div>
+  <p class="muted">Inspectors see inspection work, replacement crews see
+   replacement and renewal work, and dispatcher/admin users see the
+   national view.</p>
+ </aside>
+ {% endif %}
+</section>
+{% endblock %}

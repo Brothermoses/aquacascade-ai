@@ -1,0 +1,84 @@
+{% extends "base.html" %}{% block body %}
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Work order</div>
+  <h1>#{{ wo.id }} - {{ wo.sid }}</h1>
+  <p class="sub">PWSID <b>{{ wo.pwsid or '-' }}</b> - Location
+   <b>{{ wo.loc or '-' }}</b></p>
+ </div>
+ <div class="hero-actions"><span class="badge {{ 'b-rehab' if wo.type in
+  ('REHAB','RENEWAL') else 'b-insp' }}">{{ wo.type }}</span></div>
+</header>
+
+<section class="overview-grid">
+ <div class="kpi"><b>{{ wo.status }}</b><span>Status</span></div>
+ <div class="kpi"><b>{{ wo.state }}</b><span>State</span></div>
+ {% if wo.type in ('REHAB','RENEWAL') %}
+ <div class="kpi"><b>{{ wo.rehab_year }}</b><span>Scheduled year</span></div>
+ {% else %}
+ <div class="kpi"><b>{{ wo.priority_rank if wo.priority_rank and wo.priority_rank<999999999 else '-' }}</b><span>Model priority</span></div>
+ {% endif %}
+ <div class="kpi"><b>{{ '%.2f'|format(wo.p_lead_rich) if wo.p_lead_rich else '-' }}</b><span>P(lead-rich)</span></div>
+</section>
+
+{% if wo.status in ('OPEN','ASSIGNED') %}
+<section class="card">
+ <form method="post">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <input type="hidden" name="_action" value="claim">
+  <button class="btn alt" type="submit">Claim work order</button>
+ </form>
+</section>
+{% endif %}
+
+{% if wo.status=='DONE' %}
+ <div class="card"><div class="empty">This work order is complete.</div></div>
+{% elif wo.type in ('REHAB','RENEWAL') %}
+<form method="post"><div class="card form-card">
+ <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+ <h2>Confirm Replacement Complete</h2>
+ <div class="grid">
+  <div><label>Completion date *</label>
+   <input type="date" name="completion_date" required></div>
+  <div><label>Crew / contractor</label><input name="crew"></div>
+ </div>
+ <label>Notes</label><textarea name="notes" rows="3"></textarea>
+ <div class="form-actions"><button class="btn" type="submit">Mark replaced</button></div>
+</div></form>
+{% else %}
+<form method="post"><div class="card form-card">
+ <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+ <h2>Inspection Result <span class="muted">EPA LCRR</span></h2>
+ <div class="grid"><div>
+  <label>System-owned material *</label>
+  <select name="system_side_material" required><option value="">-</option>
+   {% for m in S.MATERIALS %}<option>{{ m }}</option>{% endfor %}</select>
+  <label>Customer-owned material *</label>
+  <select name="customer_side_material" required><option value="">-</option>
+   {% for m in S.MATERIALS %}<option>{{ m }}</option>{% endfor %}</select>
+  <label>Basis of classification *</label>
+  <select name="basis_of_classification" required><option value="">-</option>
+   {% for b in S.BASES %}<option>{{ b }}</option>{% endfor %}</select>
+  <label>Investigation method *</label>
+  <select name="investigation_method" required><option value="">-</option>
+   {% for x in S.INVESTIGATION_METHODS %}<option>{{ x }}</option>
+   {% endfor %}</select>
+ </div><div>
+  <label>Investigation date *</label>
+  <input type="date" name="investigation_date" required>
+  <label>Install year</label>
+  <input name="install_year" placeholder="e.g. 1965">
+  <label>Inspector</label><input name="inspector">
+  <label>Investigation cost (USD)</label>
+  <input name="investigation_cost" placeholder="e.g. 200">
+  <label class="checkline"><input type="checkbox"
+   name="disadvantaged_community_flag"> Disadvantaged community
+   (LCRI priority)</label>
+ </div></div>
+ <label>Notes</label><textarea name="notes" rows="3"></textarea>
+ <label>Photo / evidence reference</label><input name="photo_ref">
+ <p class="muted">Overall LCRR classification is computed in priority
+  order: Lead, GRR, Unknown, then Non-lead.</p>
+ <div class="form-actions"><button class="btn" type="submit">Save result</button></div>
+</div></form>{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+service_line_id,pwsid,address,install_year,current_status
+SL-0001,IL0430800,101 Maple St,1962,Unknown
+SL-0002,IL0430800,103 Maple St,1958,Unknown
+SL-0003,IL0430800,210 Oak Ave,1991,Unknown
+SL-0004,IL0310450,12 River Rd,1949,Unknown
+SL-0005,IL0310450,14 River Rd,1972,Unknown
+SL-0006,ND3700314,500 Elm Dr,1985,Unknown
+SL-0007,KY0920181,77 Birch Ln,1955,Unknown
+SL-0008,KY0920181,79 Birch Ln,2003,Unknown
+SL-0009,OH6801612,8 Pine Ct,1968,Unknown
+SL-0010,OH6801612,9 Pine Ct,1947,Unknown

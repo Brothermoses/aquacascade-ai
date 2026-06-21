@@ -1,0 +1,77 @@
+{
+  "n_systems": 1935,
+  "positives": 178,
+  "positive_rate": 0.09198966408268734,
+  "n_features": 19,
+  "model": "HistGradientBoosting + isotonic calibration (nested CV)",
+  "scope": "evidence-supported base features only; rejected ideas (trajectory, depth>2 elsewhere, inter-utility cascade) deliberately excluded",
+  "validation_a_repeated_stratified_cv": {
+    "roc_auc": 0.729790309068701,
+    "pr_auc": 0.2171986309958525,
+    "brier": 0.07885371193833651,
+    "top_decile_share_of_positives": 0.33146067415730335,
+    "precision_at_5pct": 0.28125,
+    "precision_at_10pct": 0.30569948186528495,
+    "ece": 0.02373411354847955,
+    "roc_auc_per_repeat_mean": 0.7103914998113485,
+    "roc_auc_per_repeat_std": 0.0066351052726696695,
+    "roc_auc_95ci": [
+      0.7045755736117463,
+      0.7162074260109508
+    ]
+  },
+  "validation_b_group_by_state_cv": {
+    "roc_auc": 0.5724070012086486,
+    "pr_auc": 0.1197288424827438,
+    "brier": 0.08621581220372228,
+    "top_decile_share_of_positives": 0.16292134831460675,
+    "precision_at_5pct": 0.14583333333333334,
+    "precision_at_10pct": 0.15025906735751296
+  },
+  "validation_c_county_rate_ablation": {
+    "base_roc_auc_mean": 0.7103914998113485,
+    "plus_county_roc_auc_mean": 0.6911167528921234,
+    "delta_mean": -0.01927474691922515,
+    "delta_std": 0.0094432037011222,
+    "pct_repeats_county_helps": 0.0,
+    "verdict": "county term does NOT materially help this target (kept out of production model)"
+  },
+  "reliability_curve": [
+    [
+      0.06602637292006579,
+      0.05034324942791762,
+      1311
+    ],
+    [
+      0.13254886993139314,
+      0.16129032258064516,
+      527
+    ],
+    [
+      0.2305193197480347,
+      0.30120481927710846,
+      83
+    ],
+    [
+      0.3508891450535576,
+      0.08333333333333333,
+      12
+    ],
+    [
+      0.40791956372737503,
+      1.0,
+      1
+    ],
+    [
+      0.5485426341174314,
+      0.0,
+      1
+    ]
+  ],
+  "baseline_pr_auc": 0.09198966408268734,
+  "ranking_artifact": {
+    "file": "C:\\Users\\moise\\Documents\\Texas A&M University Competition\\05_Modeling\\triage_production_ranking.csv",
+    "systems_ranked": 14113,
+    "unresolved_unknown_lines": 22524792
+  }
+}

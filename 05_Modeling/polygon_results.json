@@ -1,0 +1,16 @@
+{
+  "national_modelled_systems": 65720,
+  "gis_covered_systems": 3591,
+  "edges": 2289,
+  "mean_degree": 1.2748538011695907,
+  "pct_connected": 0.5254803675856308,
+  "subset_positive_rate": 0.2623224728487886,
+  "base_roc_auc": 0.8267865773167618,
+  "base_pr_auc": 0.7604820910504386,
+  "plus_1hop_roc_auc": 0.8329788751754258,
+  "plus_1hop_pr_auc": 0.765829081625772,
+  "plus_katz_roc_auc": 0.7820400920429053,
+  "plus_katz_pr_auc": 0.7076903648992303,
+  "residual_spatial_autocorr_moran": 0.09883294785454486,
+  "note": "GIS boundary layer is a regional subset (mostly CA); metrics are on that covered subset only."
+}

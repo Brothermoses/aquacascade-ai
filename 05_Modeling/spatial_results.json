@@ -1,0 +1,14 @@
+{
+  "n_systems": 51056,
+  "n_counties": 3249,
+  "mean_counties_per_system": 0.9973950172359762,
+  "graph_note": "disjoint county clusters (~1 county/system); not a multi-hop network",
+  "pct_systems_with_county": 0.9918520839862112,
+  "base_cv_roc_auc": 0.6950206919480814,
+  "base_cv_pr_auc": 0.3677948891178029,
+  "cascade_cv_roc_auc": 0.7417130121776172,
+  "cascade_cv_pr_auc": 0.4469076320703644,
+  "delta_roc_auc": 0.046692320229535844,
+  "delta_pr_auc": 0.07911274295256149,
+  "residual_spatial_autocorr_moran": 0.06133526368724287
+}

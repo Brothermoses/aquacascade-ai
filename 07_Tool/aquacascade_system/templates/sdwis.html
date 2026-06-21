@@ -1,0 +1,135 @@
+{% extends "base.html" %}{% block body %}
+{% macro n(v) %}{{ "{:,}".format(v or 0) }}{% endmacro %}
+{% macro material_style(m) %}{% if m == 'Lead' %}#B23B3B{% elif m == 'Galvanized Requiring Replacement' %}#C77816{% elif m == 'Lead Status Unknown' %}#5F6F84{% else %}#1F7A4D{% endif %}{% endmacro %}
+
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">SDWIS {{ (inventory.source_quarter or 'inventory')|replace('Q',' Q') }}</div>
+  <h1>SDWIS inventory submission view</h1>
+  <p class="sub">System-level EPA inventory counts with national
+   composition, coverage, and state-level action inventory.</p>
+ </div>
+ <div class="hero-actions">
+  <a class="btn" href="{{ url_for('web.export', name='system_inventory') }}">Export Q1 inventory CSV</a>
+  <a class="btn ghost" href="{{ url_for('web.line_map') }}">Open map</a>
+ </div>
+</header>
+
+<section class="card lifecycle-field-band">
+ <div class="card-head">
+  <div><h2>Lifecycle Import Fields</h2>
+   <p class="muted">These are the utility-owned asset fields needed to turn
+    SDWIS material counts into rehabilitation and inspection planning.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.imp') }}">Import asset records</a>
+ </div>
+ <div class="field-chip-grid">
+  <code>install_year</code>
+  <code>expected_service_life_years</code>
+  <code>replacement_year</code>
+  <code>diameter_in</code>
+  <code>length_ft</code>
+  <code>ownership_side</code>
+  <code>verification_method</code>
+  <code>evidence_source</code>
+  <code>confidence_score</code>
+ </div>
+</section>
+
+<section class="trust-grid">
+ <div class="card trust-card">
+  <h2>Source</h2>
+  <p class="muted">Loaded public SDWIS {{ (inventory.source_quarter or 'inventory')|replace('Q',' Q') }} inventory counts.</p>
+ </div>
+ <div class="card trust-card">
+  <h2>Geography</h2>
+  <p class="muted">Mapped systems use public representative locations
+   joined from water-system boundary data.</p>
+ </div>
+ <div class="card trust-card">
+  <h2>Limits</h2>
+  <p class="muted">This is system-level public inventory, not private
+   service-line geometry unless imported by a utility.</p>
+ </div>
+</section>
+
+<section class="dashboard-grid lifecycle-dashboard">
+ <div class="card lifecycle-card">
+  <div class="card-head">
+   <div><h2>What SDWIS Does Not Include</h2>
+    <p class="muted">Public SDWIS inventory is excellent for material counts
+     and submission coverage. It does not include installation year,
+     pipe age, asset lifespan, diameter, length, or street-level service
+     line geometry.</p></div>
+  </div>
+  <div class="data-contract-grid">
+   <div><b>Needed for rehab</b><span>Utility GIS, CMMS, work orders,
+    as-builts, tap cards, meter records, permits, and field verification</span></div>
+   <div><b>Imported age coverage</b><span>{{ n(lifecycle.with_install_year) }}
+    of {{ n(lifecycle.total) }} utility assets have install year</span></div>
+   <div><b>Service-life basis</b><span>{{ n(lifecycle.with_supplied_service_life) }}
+    records supply service life; the rest use the explicit
+    {{ lifecycle.default_service_life_years }}-year assumption</span></div>
+   <div><b>Renewal queue</b><span>{{ n(lifecycle.overdue) }} imported
+    records are past expected service life</span></div>
+  </div>
+ </div>
+ <aside class="card ops-card asset-gap-card">
+  <h2>Commercial Missing Piece</h2>
+  <p class="muted">For utilities, the valuable workflow is the bridge from
+   SDWIS compliance counts to an auditable rehab and inspection program:
+   import asset age, score data gaps, map work, create work orders, and
+   export regulator-ready evidence.</p>
+  <a class="btn ghost" href="{{ url_for('web.imp') }}">Import asset records</a>
+ </aside>
+</section>
+
+<section class="overview-grid">
+ <div class="kpi"><b>{{ n(inventory.total_lines) }}</b><span>Total reported</span></div>
+ <div class="kpi"><b>{{ n(inventory.lead_count) }}</b><span>Lead</span></div>
+ <div class="kpi"><b>{{ n(inventory.grr_count) }}</b><span>GRR</span></div>
+ <div class="kpi"><b>{{ n(inventory.unknown_count) }}</b><span>Unknown</span></div>
+</section>
+
+<section class="dashboard-grid">
+ <div class="card insight-card">
+  <h2>National Material Mix</h2>
+  <div class="composition-bars executive">
+   {% for row in inventory.composition %}
+   <div class="comp-row">
+    <div class="comp-top"><b>{{ row.material }}</b>
+     <span>{{ n(row.count) }} ({{ "%.1f"|format(row.pct) }}%)</span></div>
+    <div class="comp-track"><div class="comp-fill"
+     style="width:{{ "%.2f"|format(row.pct) }}%;background:{{ material_style(row.material) }}"></div></div>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+ <aside class="card ops-card">
+  <h2>Submission Coverage</h2>
+  <div class="readiness-list">
+   <div><b>{{ n(inventory.systems) }}</b><span>systems in the loaded inventory</span></div>
+   <div><b>{{ n(inventory.mapped_systems) }}</b><span>systems mapped for visual review</span></div>
+   <div><b>{{ n(inventory.unmapped_systems) }}</b><span>systems missing usable coordinates</span></div>
+  </div>
+  <div class="score-bar large"><span style="width:{{ "%.2f"|format(inventory.mapped_pct) }}%"></span></div>
+  <p class="muted">{{ "%.1f"|format(inventory.mapped_pct) }}% geographic coverage from public system boundary centroids.</p>
+ </aside>
+</section>
+
+<section class="card">
+ <div class="card-head">
+  <div><h2>State Rollup</h2>
+   <p class="muted">Top states by lead, GRR, and unknown inventory.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.export', name='sdwis_rollup') }}">Export field rollup CSV</a>
+ </div>
+ <div class="tablewrap"><table>
+  <tr><th>State</th><th>Systems</th><th>Total lines</th>
+   <th>Lead / GRR</th><th>Unknown</th><th>State map</th></tr>
+  {% for r in inventory.states %}
+  <tr><td><a class="table-link" href="{{ url_for('web.line_map', state=r.state) }}"><b>{{ r.state }}</b></a></td><td>{{ n(r.systems) }}</td>
+   <td>{{ n(r.total) }}</td><td>{{ n(r.lead + r.grr) }}</td>
+   <td>{{ n(r.unknown) }}</td><td><a class="btn ghost small" href="{{ url_for('web.line_map', state=r.state) }}">Open map</a></td></tr>
+  {% endfor %}
+ </table></div>
+</section>
+{% endblock %}

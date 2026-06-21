@@ -1,0 +1,47 @@
+{
+  "generated": "2026-05-16 15:12:15",
+  "seed": 42,
+  "python": "3.14.3",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "numpy": "2.4.3",
+  "pandas": "3.0.1",
+  "scikit_learn": "1.8.0",
+  "inputs": {
+    "SDWIS_service_line_inventory_2025Q1.csv": {
+      "sha256": "3a0aeb257b734ba4fc02431aaf10276a67f0eafb7da7558f7145dd6957bf46f0",
+      "data_rows": 66551,
+      "bytes": 11738251
+    },
+    "SDWIS_service_line_inventory_2026Q1.csv": {
+      "sha256": "8c204ccb4188eb8e2b70d92451360630ee1e46e6fda214495b39754b85f4338a",
+      "data_rows": 66439,
+      "bytes": 11883705
+    },
+    "SDWA_LCR_SAMPLES.csv": {
+      "sha256": "4990e952b8592bb158450816fb4384ae55ddae951903f10fcc1c1174ff33b9a0",
+      "data_rows": 924498,
+      "bytes": 124001237
+    },
+    "SDWA_SITE_VISITS.csv": {
+      "sha256": "0dca9764e30aecb41e31df113b34c1c71a421c771e505c2895de2b162940201a",
+      "data_rows": 2478266,
+      "bytes": 389955548
+    },
+    "SDWA_PUB_WATER_SYSTEMS.csv": {
+      "sha256": "8eb27cb4202e19713b3c41a5a24335d47b07c362366cf4ad7a9af883f2c705aa",
+      "data_rows": 433698,
+      "bytes": 129096115
+    },
+    "SDWA_GEOGRAPHIC_AREAS.csv": {
+      "sha256": "8a40f1e0403b5e8e38ea75dc4807da1e761b7778d8918feb267974e88af073a7",
+      "data_rows": 577661,
+      "bytes": 40724440
+    },
+    "Buyers_Sellers_2023Q4.csv": {
+      "sha256": "b466322652930f06f42517c0875d0b69fe963d6eb2a5cadea797446e8e5e6754",
+      "data_rows": 20129,
+      "bytes": 402605
+    }
+  },
+  "entrypoint": "python 05_Modeling/triage_production.py"
+}

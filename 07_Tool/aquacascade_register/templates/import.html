@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block body %}
+<h1>Import service-line list</h1>
+<div class="card">
+ <form method="post" enctype="multipart/form-data">
+  <label>Utility service-line list (CSV or XLSX)</label>
+  <input type="file" name="file" accept=".csv,.xlsx,.xls" required>
+  <p class="muted">Recognized columns (case-insensitive):
+   <code>service_line_id</code> (required), <code>pwsid</code>,
+   <code>location/address</code>, <code>install_year</code>,
+   <code>current_status</code>. A demo file is provided:
+   <code>SAMPLE_service_lines_DEMO.csv</code>.</p>
+  <br><button class="btn" type="submit">Import</button>
+ </form>
+</div>
+<p class="muted">Need to start over?
+ <a href="/clear" onclick="return confirm('Delete all imported lines and investigations?')">Clear all data</a>.</p>
+{% endblock %}

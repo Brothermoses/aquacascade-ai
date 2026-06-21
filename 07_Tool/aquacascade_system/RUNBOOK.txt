@@ -1,0 +1,193 @@
+AquaCascade - Lead Service-Line System
+======================================
+
+Local/offline MVP for lead service-line triage, investigation capture,
+interactive service-line mapping, SDWIS/model-feedback exports,
+rehabilitation planning, and post-lifespan asset renewal.
+
+NATIONWIDE / MULTI-TENANT
+  The analysis is national: the triage model covers the national
+  community-water-system universe. Runtime data is scoped by tenant:
+    - UTILITY tenant: one PWSID
+    - STATE tenant: two-letter state
+    - NATIONAL tenant: all systems
+  Every protected API request requires both X-API-Key and X-User-Token.
+  The user token determines the tenant scope and role.
+
+HONEST SCOPE
+  Verified here: SQLite local backend, Docker Compose + Postgres health
+  smoke, version-recorded migrations, tenant scoping, role-separated
+  queues, hashed one-time user tokens, token rotation/deactivation,
+  live service-line map data, SQLite backup/restore, atomic work-order
+  claim, CSRF-protected web forms, exports, the closed
+  investigation-to-rehab loop, and the automated test suite.
+
+  Still production work: OAuth/SSO or IdP integration, a formal security
+  review, managed cloud provisioning, off-site backup retention policy,
+  alert routing, and load testing. The app-level API key + user-token
+  model is suitable for a controlled local/program deployment, not
+  internet SaaS.
+
+RUN
+  cd "07_Tool"
+  python -m aquacascade_system.app
+  open http://127.0.0.1:5000
+
+PRODUCTION-STYLE LOCAL RUN
+  cd "07_Tool"
+  python -m aquacascade_system.serve
+
+  This uses Waitress, binds to AQUA_HOST/AQUA_PORT (defaults
+  0.0.0.0:5000), and applies migrations on startup.
+
+DOCKER + POSTGRES
+  Copy .env.example to .env, replace every secret, then:
+    docker compose up --build
+
+  Compose runs Postgres 16 and points the app at it via AQUA_DB_URL.
+  This is a production-like smoke path, not a full security/load review.
+
+  Secrets:
+    - AQUA_API_KEY overrides data/api_key.txt
+    - AQUA_SECRET_KEY overrides data/secret_key.txt
+    - AQUA_COOKIE_SECURE=1 when served over HTTPS
+    - AQUA_SHOW_SECRETS=1 prints the API key during local debugging
+
+REQUIREMENTS
+  python -m pip install -r requirements-app.txt
+
+ARCHITECTURE
+  config.py        paths, assumptions, API/session secrets
+  auth.py          bearer-token generation, hashing, and labels
+  db.py            DB adapter + version-recorded migrations
+  db_admin.py      migrate / seed / info / backup / restore CLI
+  ops.py           SQLite backup/restore helpers
+  real_data.py     loads real SDWIS inventory + public system geography
+  user_admin.py    trusted local tenant/user administration CLI
+  schema_def.py    EPA LCRR schema, vocabularies, validation logic
+  triage_bridge.py loads triage_production_ranking.csv, with legacy fallback
+  rehab_engine.py  multi-year exposure-minimizing scheduler
+  models.py        data-access + domain logic
+  pipeline.py      orchestrator + CLI
+  api.py           REST /api/v1, X-API-Key + X-User-Token
+  web.py           CSRF-protected server-rendered UI
+  serve.py         Waitress WSGI entrypoint
+  tests/run_tests.py end-to-end checks
+
+DATA FLOW
+  import service lines, including WKT/GeoJSON pipeline geometry or
+  coordinates when available -> live OpenStreetMap view by material/status
+  -> join system-level triage rank -> create INSPECTION work orders ->
+  inspector claims and records EPA-LCRR result -> SDWIS rollup +
+  model-feedback export -> rehab plan -> REHAB work orders -> replacement
+  completion.
+
+ROLES
+  INSPECTOR: sees and completes only INSPECTION work.
+  REHAB: sees and completes only REHAB/RENEWAL work.
+  DISPATCHER: scoped dashboard, imports, prioritization, exports.
+  ADMIN: dispatcher powers plus tenant/national onboarding.
+
+  Seeded local demo tokens:
+    admin-national-001, disp-demo-001, insp-demo-001, rehab-demo-001,
+    tech-demo-001.
+
+REST API
+  GET  /api/v1/health                         open
+  GET  /api/v1/health/ready                   open readiness probe
+  GET  /api/v1/whoami                         protected
+  GET  /api/v1/system/info                    admin
+  GET  /api/v1/stats                          dispatcher/admin
+  GET  /api/v1/rollup/by-state                dispatcher/admin
+  GET  /api/v1/tenants                        admin
+  POST /api/v1/tenants                        admin
+  GET  /api/v1/users                          admin
+  POST /api/v1/users                          admin, returns token once
+  POST /api/v1/users/<id>/rotate-token        admin, returns token once
+  POST /api/v1/users/<id>/deactivate          admin
+  POST /api/v1/users/<id>/activate            admin
+  POST /api/v1/onboard-national               admin
+  POST /api/v1/ingest/service-lines           dispatcher/admin
+  POST /api/v1/pipeline/prioritize            dispatcher/admin
+  POST /api/v1/pipeline/renewals              dispatcher/admin
+  GET  /api/v1/work-orders                    dispatcher/admin
+  GET  /api/v1/service-lines/map              dispatcher/admin
+  GET  /api/v1/my-work-orders                 inspector/rehab token
+  GET  /api/v1/my-work-orders.csv             inspector/rehab token
+  POST /api/v1/work-orders/<id>/claim         role/scope enforced
+  POST /api/v1/work-orders/<id>/result        role/scope enforced
+  POST /api/v1/rehab/plan                     dispatcher/admin
+  GET  /api/v1/exports/<name>.csv             dispatcher/admin
+
+MODEL ARTIFACT
+  Regenerate the final calibrated model and app ranking:
+    python 05_Modeling/triage_production.py
+
+  The app prefers:
+    05_Modeling/triage_production_ranking.csv
+  and falls back to:
+    05_Modeling/unknown_triage_ranking.csv
+
+TESTS
+  cd "07_Tool"
+  python aquacascade_system/tests/run_tests.py
+
+DB LIFECYCLE
+  cd "07_Tool"
+  python -m aquacascade_system.db_admin info
+  python -m aquacascade_system.db_admin migrate
+  python -m aquacascade_system.db_admin seed
+  python -m aquacascade_system.db_admin backup ..\backups\aquacascade.db
+  python -m aquacascade_system.db_admin restore ..\backups\aquacascade.db
+
+  SQLite backup/restore is implemented with the SQLite backup API. For
+  PostgreSQL deployments, use pg_dump/pg_restore and schedule off-site
+  retention at the infrastructure layer.
+
+USER LIFECYCLE
+  cd "07_Tool"
+  python -m aquacascade_system.user_admin tenants
+  python -m aquacascade_system.user_admin users
+  python -m aquacascade_system.user_admin create-user 1 INSPECTOR "Field User"
+  python -m aquacascade_system.user_admin rotate-token 3
+  python -m aquacascade_system.user_admin deactivate 3
+
+  New and rotated tokens are printed once. The database stores token_hash
+  and token_label, not the bearer token itself. Seeded demo tokens remain
+  available in local demo mode for judging/testing.
+
+MONITORING
+  Liveness:  GET /api/v1/health
+  Readiness: GET /api/v1/health/ready
+  Admin inventory: GET /api/v1/system/info
+
+DATA
+  Local SQLite:
+    07_Tool/aquacascade_system/data/aquacascade.db
+
+  Demo import:
+    07_Tool/aquacascade_system/SAMPLE_service_lines_DEMO.csv
+
+  Map coordinates:
+    Import geometry as WKT/GeoJSON LINESTRING, MULTILINESTRING, or POINT.
+    Latitude/longitude columns are also supported, as is POINT(lon lat) /
+    lat, lon in location. Addresses are retained as metadata; the app does
+    not automatically geocode them.
+
+  Real public inventory layer:
+    cd "07_Tool"
+    python -m aquacascade_system.real_data load-inventory
+
+    This loads SDWIS_service_line_inventory_2026Q1.csv joined to public
+    water-system boundary representative points. It is real reported
+    material-count data at PWS level, not pipe-by-pipe street geometry.
+
+  Map tiles:
+    The default uses https://tile.openstreetmap.org/{z}/{x}/{y}.png with
+    visible OpenStreetMap attribution. For production traffic, set
+    AQUA_MAP_TILE_URL and AQUA_MAP_TILE_ATTRIBUTION to a managed or
+    self-hosted OSM-derived tile service.
+
+RELATIONSHIP TO THE EARLIER TOOL
+  07_Tool/aquacascade_register/ is v1 and kept for history.
+  07_Tool/aquacascade_system/ supersedes it.

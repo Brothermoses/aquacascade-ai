@@ -1,0 +1,16 @@
+[00:22:14] Building WSS 2013-2021 paths (shared across all variants)
+[00:22:21]   systems with >= 12/36 quarters: 51,056
+[00:22:21]   built paths array (51056, 36, 4) (channels: time,logpop,nfac,nsv)
+[00:22:21]   health target loaded from cache (19,455)
+[00:22:28]   51,056 systems, 9,989 positives (19.6%), 16 non-signature features
+[00:22:32]   A_depth2_sig       sigdim= 20  LASSO= 30
+[00:24:28]   B_depth3_sig       sigdim= 84  LASSO= 66
+[00:24:51]   C_depth3_logsig    sigdim= 84  LASSO= 90
+[00:24:58]   A_depth2_sig       ROC-AUC 0.6753 +/- 0.0056 (25 splits)
+[00:25:06]   B_depth3_sig       ROC-AUC 0.6818 +/- 0.0057 (25 splits)
+[00:25:14]   C_depth3_logsig    ROC-AUC 0.6736 +/- 0.0051 (25 splits)
+[00:25:14]   B vs A: mean delta +0.0065 +/- 0.0026, 100% of splits favor B
+[00:25:14] VERDICT: depth-3 robustly justified
+C:\Users\moise\Documents\Texas A&M University Competition\05_Modeling\sig_depth_ab.py:135: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  bp = ax.boxplot(data, labels=labels, showmeans=True, widths=0.5)
+[00:25:15]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\sig_depth_ab.png

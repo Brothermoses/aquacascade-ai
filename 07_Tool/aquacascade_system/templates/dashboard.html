@@ -1,0 +1,220 @@
+{% extends "base.html" %}{% block body %}
+{% macro n(v) %}{{ "{:,}".format(v or 0) }}{% endmacro %}
+{% macro material_style(m) %}{% if m == 'Lead' %}#B23B3B{% elif m == 'Galvanized Requiring Replacement' %}#C77816{% elif m == 'Lead Status Unknown' %}#5F6F84{% else %}#1F7A4D{% endif %}{% endmacro %}
+
+<header class="page-hero dashboard-hero">
+ <div>
+  <div class="eyebrow">SDWIS {{ (inventory.source_quarter or 'inventory')|replace('Q',' Q') }}</div>
+  <h1>National service-line command center</h1>
+  <p class="sub">A single operational view of real inventory exposure,
+   map coverage, field work, rehabilitation, and export readiness.</p>
+ </div>
+ <div class="hero-score">
+  <span>Lead, GRR, or unknown</span>
+  <b>{{ "%.1f"|format(inventory.risk_pct) }}%</b>
+  <div class="score-bar"><span style="width:{{ "%.2f"|format(inventory.risk_pct) }}%"></span></div>
+ </div>
+</header>
+
+<section class="overview-grid">
+ <div class="kpi"><b>{{ n(inventory.total_lines) }}</b><span>Reported lines</span></div>
+ <div class="kpi"><b>{{ n(inventory.systems) }}</b><span>Water systems</span></div>
+ <div class="kpi"><b>{{ n(inventory.replacement_count) }}</b><span>Lead / GRR</span></div>
+ <div class="kpi"><b>{{ n(inventory.unknown_count) }}</b><span>Unknown status</span></div>
+</section>
+
+{% set top_state = inventory.states[0] if inventory.states else none %}
+<section class="priority-grid">
+ <div class="priority-card urgent">
+  <span>01</span><h2>Resolve Unknowns</h2>
+  <b>{{ n(inventory.unknown_count) }}</b>
+  <p>Unknown service lines are the largest compliance uncertainty in the
+   loaded Q1 inventory.</p>
+ </div>
+ <div class="priority-card">
+  <span>02</span><h2>Replace Known Lead / GRR</h2>
+  <b>{{ n(inventory.replacement_count) }}</b>
+  <p>Confirmed Lead and Galvanized-Requiring-Replacement lines are the
+   direct replacement backlog.</p>
+ </div>
+ <div class="priority-card">
+  <span>03</span><h2>Focus The Hotspot</h2>
+  <b>{{ top_state.state if top_state else '-' }}</b>
+  <p>{% if top_state %}{{ n(top_state.risk) }} action or unknown lines in
+   the highest-volume state.{% else %}No state rollup loaded yet.{% endif %}</p>
+  {% if top_state %}<a class="inline-link" href="{{ url_for('web.line_map', state=top_state.state) }}">Open {{ top_state.state }} map</a>{% endif %}
+ </div>
+ <div class="priority-card">
+  <span>04</span><h2>Close Map Gaps</h2>
+  <b>{{ n(inventory.unmapped_systems) }}</b>
+  <p>Systems still need usable coordinates before the map can fully
+   support field planning.</p>
+ </div>
+</section>
+
+<section class="dashboard-grid lifecycle-dashboard">
+ <div class="card lifecycle-card">
+  <div class="card-head">
+   <div><h2>Asset Age Readiness</h2>
+    <p class="muted">Line-level rehab planning starts when a utility imports
+     installation dates, geometry, and evidence for its assets.</p></div>
+   <a class="btn ghost" href="{{ url_for('web.export', name='asset_lifecycle') }}">Export readiness CSV</a>
+  </div>
+  <div class="lifecycle-stats">
+   <div><b>{{ n(lifecycle.total) }}</b><span>Imported assets</span></div>
+   <div><b>{{ n(lifecycle.with_install_year) }}</b><span>With install year</span></div>
+   <div><b>{{ n(lifecycle.ready_records) }}</b><span>Age + geometry</span></div>
+   <div><b>{{ n(lifecycle.due_10_years) }}</b><span>Due within 10 years</span></div>
+  </div>
+  <div class="coverage-bars">
+   <div><span>Install-year coverage</span>
+    <div class="comp-track"><div class="comp-fill"
+     style="width:{{ '%.2f'|format(lifecycle.age_coverage_pct) }}%"></div></div></div>
+   <div><span>Geometry coverage</span>
+    <div class="comp-track"><div class="comp-fill alt-fill"
+     style="width:{{ '%.2f'|format(lifecycle.geometry_coverage_pct) }}%"></div></div></div>
+  </div>
+ </div>
+ <aside class="card ops-card asset-gap-card">
+  <h2>Rehab Data Gaps</h2>
+  <div class="readiness-list">
+   <div><b>{{ n(lifecycle.missing_install_year) }}</b><span>missing install year</span></div>
+   <div><b>{{ n(lifecycle.missing_geometry) }}</b><span>missing usable geometry</span></div>
+   <div><b>{{ n(lifecycle.replacement_missing_age) }}</b><span>Lead / GRR assets missing age</span></div>
+  </div>
+  <p class="muted">Public SDWIS supplies material counts, not asset age.
+   Rehab-ready records come from utility GIS, CMMS, as-builts, tap cards,
+   permits, meter records, and field verification.</p>
+ </aside>
+</section>
+
+<section class="dashboard-grid">
+ <div class="card insight-card">
+  <div class="card-head">
+   <div><h2>Material Composition</h2>
+    <p class="muted">Real SDWIS inventory counts loaded into the national
+     map layer.</p></div>
+   <a class="btn ghost" href="{{ url_for('web.line_map') }}">Open map</a>
+  </div>
+  <div class="material-stack" aria-label="Material composition">
+   {% for row in inventory.composition %}
+    {% if row.count %}
+    <span style="width:{{ "%.3f"|format(row.pct) }}%;background:{{ material_style(row.material) }}"
+     title="{{ row.material }} - {{ n(row.count) }}"></span>
+    {% endif %}
+   {% endfor %}
+  </div>
+  <div class="composition-bars executive">
+   {% for row in inventory.composition %}
+   <div class="comp-row">
+    <div class="comp-top"><b>{{ row.material }}</b>
+     <span>{{ n(row.count) }} ({{ "%.1f"|format(row.pct) }}%)</span></div>
+    <div class="comp-track"><div class="comp-fill"
+     style="width:{{ "%.2f"|format(row.pct) }}%;background:{{ material_style(row.material) }}"></div></div>
+   </div>
+   {% endfor %}
+  </div>
+ </div>
+
+ <aside class="card ops-card">
+  <h2>Workflow Status</h2>
+  <div class="status-grid">
+   <div><b>{{ n(s.work_orders_open) }}</b><span>Open</span></div>
+   <div><b>{{ n(s.work_orders_in_progress) }}</b><span>In progress</span></div>
+   <div><b>{{ n(s.work_orders_done) }}</b><span>Completed</span></div>
+   <div><b>{{ n(s.inspections_recorded) }}</b><span>Inspections</span></div>
+  </div>
+  <div class="readiness-list">
+   <div><b>{{ n(inventory.mapped_systems) }}</b>
+    <span>systems have a representative map point</span></div>
+   <div><b>{{ n(inventory.unmapped_systems) }}</b>
+    <span>systems still need usable geometry</span></div>
+   <div><b>{{ n(s.model_systems_loaded) }}</b>
+    <span>systems loaded in the triage model</span></div>
+  </div>
+ </aside>
+</section>
+
+<section class="card">
+ <div class="card-head">
+  <div><h2>States With The Largest Action Inventory</h2>
+   <p class="muted">Lead, galvanized requiring replacement, and unknown
+    service lines by state. Bar length is relative to the highest state.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.sdwis_page') }}">View SDWIS</a>
+ </div>
+ <div class="state-bars">
+  {% for r in inventory.states %}
+  <div class="state-bar-row">
+   <div class="state-label-block"><a href="{{ url_for('web.line_map', state=r.state) }}"><b>{{ r.state }}</b></a>
+    <span>{{ n(r.risk) }} action / unknown</span></div>
+   <div class="state-track"><span style="width:{{ "%.2f"|format(r.risk_share) }}%"></span></div>
+   <div class="state-pct">{{ "%.1f"|format(r.risk_pct) }}%</div>
+  </div>
+  {% endfor %}
+ </div>
+</section>
+
+<section class="action-grid">
+ {% if me and me.role == 'ADMIN' %}
+ <div class="card action-card">
+  <h2>Activate The Country</h2>
+  <p class="muted">Seed the national triage universe so states and
+   utilities can be onboarded without manual setup.</p>
+  <form method="post" action="{{ url_for('web.onboard_national') }}">
+   <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+   <button class="btn" type="submit">Onboard national universe</button>
+  </form>
+ </div>
+ {% endif %}
+ <div class="card action-card">
+  <h2>Run Prioritization</h2>
+  <p class="muted">Create inspection work orders for imported unknown
+   lines using the national system-level triage rank.</p>
+  <form method="post" action="{{ url_for('web.run_pipeline') }}">
+   <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+   <button class="btn alt" type="submit">Run prioritization</button>
+  </form>
+ </div>
+ <div class="card action-card">
+  <h2>Post-Lifespan Renewal</h2>
+  <p class="muted">Flag non-lead pipe beyond expected service life and
+   create renewal work orders for replacement crews.</p>
+  <form method="post" action="{{ url_for('web.run_renewals') }}">
+   <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+   <button class="btn ghost" type="submit">Generate renewal work orders</button>
+  </form>
+ </div>
+</section>
+
+<section class="trust-grid">
+ <div class="card trust-card">
+  <h2>Data Source</h2>
+  <p class="muted">The national layer uses loaded SDWIS {{ (inventory.source_quarter or 'inventory')|replace('Q',' Q') }} system inventory counts.</p>
+ </div>
+ <div class="card trust-card">
+  <h2>Map Representation</h2>
+  <p class="muted">Public map points represent water systems, not private
+   pipe-by-pipe routes. Line geometry appears when a utility imports it.</p>
+ </div>
+ <div class="card trust-card">
+  <h2>Coverage</h2>
+  <p class="muted">{{ n(inventory.mapped_systems) }} systems mapped;
+   {{ n(inventory.unmapped_systems) }} still need usable coordinates.</p>
+ </div>
+</section>
+
+<section class="card">
+ <h2>Role Separation</h2>
+ <div class="role-strip">
+  <div><span class="badge b-insp">INSPECTION</span>
+   <b>Inspectors</b><p class="muted">Confirm unknown lines and record EPA
+    LCRR evidence.</p></div>
+  <div><span class="badge b-rehab">REHAB / RENEWAL</span>
+   <b>Replacement crews</b><p class="muted">Replace confirmed lead or
+    aged infrastructure.</p></div>
+  <div><span class="badge b-open">DISPATCH</span>
+   <b>Dispatcher / Admin</b><p class="muted">Manage prioritization,
+    compliance exports, and the national view.</p></div>
+ </div>
+</section>
+{% endblock %}

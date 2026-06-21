@@ -1,0 +1,42 @@
+=== signature_pipeline (depth-3) ===
+[00:40:30] STEP 1: per-PWS 2013Q1-2021Q4 trajectory (Water System Summary)
+[00:40:36]   systems with >= 12/36 quarters: 51,056
+[00:40:37]   built paths array (51056, 36, 4) (channels: time,logpop,nfac,nsv)
+[00:40:37] STEP 2: path-signature transform (levels 1-3, geometric/Stratonovich, time-augmented; depth & calculus chosen empirically)
+[00:40:39] Target: health-based SDWA violation, non-compliance >= 2022
+[00:40:39]   health target loaded from cache (19,455)
+[00:40:39] Static features: pre-2022 site visits + system attributes
+[00:40:43] Dataset: 51,056 systems, 100 features, positives=9,989 (19.6%)
+[00:42:31] STEP 3: LASSO selected 66/100 features
+[00:42:33] RESULTS
+[00:42:33]   CV ROC-AUC : 0.683   (prior 5-qtr SLI version: 0.727)
+[00:42:33]   CV PR-AUC  : 0.357   (baseline 0.196)
+[00:42:33]   top selected features:
+[00:42:33]      -0.254  sig3_3_2_3
+[00:42:33]      +0.246  sig3_0_2_0
+[00:42:33]      +0.242  n_signif_defic
+[00:42:33]      +0.166  sig3_0_0_3
+[00:42:33]      +0.160  sig3_3_0_0
+[00:42:33]      -0.131  sig3_2_2_2
+[00:42:33]      -0.130  log_conns
+[00:42:33]      +0.119  n_site_visits
+[00:42:33]      -0.114  log_pop_2021
+[00:42:33]      -0.111  sig3_0_3_0
+[00:42:33]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\model_signature_results.png
+=== spatial_cascade (depth-3) ===
+[00:42:35] Reconstructing validated design matrix
+[00:42:40]   systems with >= 12/36 quarters: 51,056
+[00:42:41]   built paths array (51056, 36, 4) (channels: time,logpop,nfac,nsv)
+[00:42:42]   health-violation systems (cached): 19,455
+[00:42:47]   51,056 systems, 100 features, positives 19.6%
+[00:42:47] Building county spatial graph from SDWA_GEOGRAPHIC_AREAS
+[00:42:48]   3,249 counties; systems with >=1 county: 99.2%; mean counties/system 1.00
+[00:42:48] Base model: 5-fold out-of-fold predictions
+[00:42:50] Cascade model: + leakage-safe county-risk feature
+[00:42:52] RESULTS
+[00:42:52]   base      ROC-AUC 0.695  PR-AUC 0.368
+[00:42:52]   +cascade  ROC-AUC 0.742  PR-AUC 0.447
+[00:42:52]   delta     ROC-AUC +0.047  PR-AUC +0.079
+[00:42:52]   residual spatial autocorrelation (Moran-like): +0.061
+[00:42:52]   graph note: ~1.00 counties/system (disjoint clusters; Katz multi-hop not reported)
+[00:42:52]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\spatial_cascade_results.png

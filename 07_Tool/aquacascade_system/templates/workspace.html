@@ -1,0 +1,67 @@
+{% extends "base.html" %}{% block body %}
+{% macro tbadge(t) %}<span class="badge {{ 'b-rehab' if t in
+ ('REHAB','RENEWAL') else 'b-insp' }}">{{ t }}</span>{% endmacro %}
+{% macro prio(w) %}{% if w.type in ('REHAB','RENEWAL') %}Year
+ {{ w.rehab_year }}{% else %}{{ w.priority_rank if w.priority_rank and
+ w.priority_rank<999999999 else '-' }}{% endif %}{% endmacro %}
+
+{% if not mw %}
+<header class="page-hero"><div><div class="eyebrow">Field workspace</div>
+ <h1>{{ kind }} work</h1></div></header>
+<div class="card"><div class="empty">Not signed in, or unknown token.
+ <br><a class="btn" href="{{ url_for('web.login') }}">Sign in</a>
+ </div></div>
+{% else %}
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Field workspace</div>
+  <h1>{{ kind }} work - {{ mw.technician }}</h1>
+  <p class="sub">Tenant <b>{{ mw.tenant }}</b> ({{ mw.scope }} scope).
+   This workspace shows only your {{ kind|lower }} work, ordered by
+   model priority or replacement year.</p>
+ </div>
+ <div class="hero-actions"><a class="btn ghost"
+  href="{{ url_for('web.tech_worksheet') }}">Download work sheet CSV</a></div>
+</header>
+
+<section class="overview-grid">
+ <div class="kpi"><b>{{ mw.assigned|length }}</b><span>Assigned to me</span></div>
+ <div class="kpi"><b>{{ mw.available|length }}</b><span>Available to claim</span></div>
+ <div class="kpi"><b>{{ kind }}</b><span>Role-specific queue</span></div>
+ <div class="kpi"><b>{{ mw.scope }}</b><span>Tenant scope</span></div>
+</section>
+
+<div class="card">
+ <h2>Assigned to me <span class="muted">({{ mw.assigned|length }})</span></h2>
+ {% if not mw.assigned %}<div class="empty">Nothing assigned. Claim
+  from Available below.</div>
+ {% else %}<div class="tablewrap"><table>
+  <tr><th>WO</th><th>Type</th><th>Priority</th><th>Line</th>
+   <th>PWSID</th><th>State</th><th>Location</th><th>Status</th><th></th></tr>
+  {% for w in mw.assigned %}<tr><td>#{{ w.id }}</td>
+   <td>{{ tbadge(w.type) }}</td><td>{{ prio(w) }}</td><td>{{ w.sid }}</td>
+   <td>{{ w.pwsid }}</td><td>{{ w.state }}</td><td>{{ w.loc }}</td>
+   <td><span class="badge {{ 'b-prog' if w.status=='IN_PROGRESS'
+    else 'b-open' }}">{{ w.status }}</span></td>
+   <td><a class="btn"
+    href="{{ url_for('web.work_order', wid=w.id) }}">Open</a></td>
+  </tr>{% endfor %}</table></div>{% endif %}
+</div>
+
+<div class="card">
+ <h2>Available to claim
+  <span class="muted">({{ mw.available|length }})</span></h2>
+ {% if not mw.available %}<div class="empty">No open {{ kind|lower }}
+  work in scope.</div>
+ {% else %}<div class="tablewrap"><table>
+  <tr><th>WO</th><th>Type</th><th>Priority</th><th>Line</th>
+   <th>PWSID</th><th>State</th><th>Location</th><th></th></tr>
+  {% for w in mw.available %}<tr><td>#{{ w.id }}</td>
+   <td>{{ tbadge(w.type) }}</td><td>{{ prio(w) }}</td><td>{{ w.sid }}</td>
+   <td>{{ w.pwsid }}</td><td>{{ w.state }}</td><td>{{ w.loc }}</td>
+   <td><a class="btn alt"
+    href="{{ url_for('web.work_order', wid=w.id) }}">Open / claim</a></td>
+  </tr>{% endfor %}</table></div>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

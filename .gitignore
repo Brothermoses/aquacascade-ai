@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Local runtime / state
+*.db
+*.db-wal
+*.db-shm
+*.log
+*.tmp
+api_key.txt
+07_Tool/aquacascade_system/data/aquacascade.db*
+
+# Office lock files
+~$*
+
+# Build artefacts that should not be committed
+_deckbuild/node_modules/
+_deckbuild/package-lock.json
+
+# Large raw data (re-downloadable from EPA — see 01_Raw_Data/README.md)
+01_Raw_Data/SDWA_ECHO/SDWA_PUB_WATER_SYSTEMS.csv
+01_Raw_Data/SDWA_ECHO/SDWA_VIOLATIONS_ENFORCEMENT.csv
+01_Raw_Data/SDWA_ECHO/SDWA_SITE_VISITS.csv
+01_Raw_Data/SDWA_ECHO/SDWA_LCR_SAMPLES.csv
+01_Raw_Data/SDWA_ECHO/SDWA_FACILITIES.csv
+01_Raw_Data/SDWA_ECHO/SDWA_GEOGRAPHIC_AREAS.csv
+01_Raw_Data/SDWA_ECHO/SDWA_EVENTS_MILESTONES.csv
+01_Raw_Data/SDWA_ECHO/SDWA_latest_downloads.zip
+01_Raw_Data/Water_System_Summary/
+01_Raw_Data/Service_Line_Inventory/
+01_Raw_Data/Boundaries_Census_v3/PWS_Boundaries_Latest.zip
+01_Raw_Data/Service_Area_GIS/
+
+# OS
+.DS_Store
+Thumbs.db

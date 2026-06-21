@@ -1,0 +1,91 @@
+{% extends "base.html" %}{% block body %}
+{% macro n(v) %}{{ "{:,}".format(v or 0) }}{% endmacro %}
+
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Line register</div>
+  <h1>Investigation and service-line register</h1>
+  <p class="sub">The auditable line-level record for imported assets,
+   field investigations, work orders, and model feedback.</p>
+ </div>
+ <div class="hero-actions">
+  <a class="btn" href="{{ url_for('web.export', name='register') }}">Export register CSV</a>
+  <a class="btn ghost" href="{{ url_for('web.export', name='model_feedback') }}">Export model feedback</a>
+ </div>
+</header>
+
+<section class="overview-grid">
+ <div class="kpi"><b>{{ n(summary.service_lines) }}</b><span>Imported lines</span></div>
+ <div class="kpi"><b>{{ n(summary.investigations) }}</b><span>Investigations</span></div>
+ <div class="kpi"><b>{{ n(summary.replacement) }}</b><span>Replacement candidates</span></div>
+ <div class="kpi"><b>{{ n(summary.unknown) }}</b><span>Unknown lines</span></div>
+</section>
+
+<section class="dashboard-grid">
+ <div class="card">
+  <h2>Material Outcomes</h2>
+  {% if summary.materials %}
+  <div class="composition-bars executive">
+   {% for row in summary.materials %}
+   {% set pct = (row.count / summary.investigations * 100) if summary.investigations else 0 %}
+   <div class="comp-row">
+    <div class="comp-top"><b>{{ row.material or 'Unclassified' }}</b>
+     <span>{{ n(row.count) }} ({{ "%.1f"|format(pct) }}%)</span></div>
+    <div class="comp-track"><div class="comp-fill"
+     style="width:{{ "%.2f"|format(pct) }}%"></div></div>
+   </div>
+   {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No investigation outcomes yet. Import lines, run
+   prioritization, and complete inspection work orders.</div>
+  {% endif %}
+ </div>
+ <aside class="card ops-card">
+  <h2>Register Readiness</h2>
+  <div class="readiness-list">
+   <div><b>{{ n(total) }}</b><span>rows ready for register export</span></div>
+   <div><b>{{ n(summary.work_orders|length) }}</b><span>work-order status groups</span></div>
+   <div><b>{{ n(summary.unknown) }}</b><span>records still needing confirmation</span></div>
+   <div><b>{{ n(lifecycle.with_install_year) }}</b><span>assets with install year</span></div>
+  </div>
+ </aside>
+</section>
+
+<section class="card lifecycle-card">
+ <div class="card-head">
+  <div><h2>Asset Age Coverage</h2>
+   <p class="muted">The register can carry rehab metadata from utility asset
+    systems. SDWIS counts alone cannot determine pipe age.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.export', name='asset_lifecycle') }}">Export readiness CSV</a>
+ </div>
+ <div class="lifecycle-stats compact">
+  <div><b>{{ n(lifecycle.ready_records) }}</b><span>Age + geometry</span></div>
+  <div><b>{{ n(lifecycle.missing_install_year) }}</b><span>Need install year</span></div>
+  <div><b>{{ n(lifecycle.overdue) }}</b><span>Past service life</span></div>
+  <div><b>{{ n(lifecycle.using_default_service_life) }}</b><span>Using default life</span></div>
+ </div>
+</section>
+
+<section class="card">
+ <div class="card-head">
+  <div><h2>Recent Register Rows</h2>
+   <p class="muted">Showing up to 80 rows from the scoped register.</p></div>
+  <a class="btn ghost" href="{{ url_for('web.imp') }}">Import lines</a>
+ </div>
+ {% if rows %}
+ <div class="tablewrap"><table>
+  <tr><th>Line</th><th>PWSID</th><th>State</th>
+   <th>Classification</th><th>Basis</th><th>Date</th><th>Inspector</th></tr>
+  {% for r in rows %}
+  <tr><td><b>{{ r.external_line_id }}</b></td><td>{{ r.pwsid }}</td>
+   <td>{{ r.state }}</td><td>{{ r.overall_classification }}</td>
+   <td>{{ r.basis_of_classification }}</td><td>{{ r.investigation_date }}</td>
+   <td>{{ r.inspector }}</td></tr>
+  {% endfor %}
+ </table></div>
+ {% else %}
+ <div class="empty">No register rows yet.</div>
+ {% endif %}
+</section>
+{% endblock %}

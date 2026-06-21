@@ -1,0 +1,13 @@
+[02:04:31] Building triage ground truth + base features
+[02:04:38]   1,935 systems, 178 positive (9.2%)
+[02:04:38] Building per-system PB90 lead-sample paths (year<=2024)
+[02:04:38]   systems with >=3 sampled years: 1,580 (82%); >=1 year: 87%
+[02:04:38]   PB90-path signature dims: 14
+[02:04:57] RESULTS
+[02:04:57]   base                 ROC 0.6999 +/- 0.0116
+[02:04:57]   + PB90-path signature ROC 0.6850 +/- 0.0095
+[02:04:57]   paired delta -0.0149 +/- 0.0075  (0% splits help)
+[02:04:57]   VERDICT: PB90-path signature does NOT materially help the triage target (gain within CV noise / not consistent)
+C:\Users\moise\Documents\Texas A&M University Competition\05_Modeling\leadpath_signature_ab.py:201: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  ax.boxplot([a, b], labels=["base\n(19 feats)",
+[02:04:57]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\leadpath_signature_ab.png

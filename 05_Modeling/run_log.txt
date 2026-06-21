@@ -1,0 +1,24 @@
+[00:04:00] STEP 1: per-PWS 2013Q1-2021Q4 trajectory (Water System Summary)
+[00:04:07]   systems with >= 12/36 quarters: 51,056
+[00:04:08]   built paths array (51056, 36, 4) (channels: time,logpop,nfac,nsv)
+[00:04:08] STEP 2: path-signature transform (levels 1-2, time-augmented)
+[00:04:08] Target: health-based SDWA violation, non-compliance >= 2022
+[00:04:21]   violations scanned: 15,298,031 rows; health systems (>= 2022): 19,455
+[00:04:21] Static features: pre-2022 site visits + system attributes
+[00:04:26] Dataset: 51,056 systems, 36 features, positives=9,989 (19.6%)
+[00:04:30] STEP 3: LASSO selected 30/36 features
+[00:04:32] RESULTS
+[00:04:32]   CV ROC-AUC : 0.676   (prior 5-qtr SLI version: 0.727)
+[00:04:32]   CV PR-AUC  : 0.349   (baseline 0.196)
+[00:04:32]   top selected features:
+[00:04:32]      +0.240  n_signif_defic
+[00:04:32]      -0.179  sig2_3_3
+[00:04:32]      -0.133  sig2_3_2
+[00:04:32]      -0.128  log_conns
+[00:04:32]      +0.122  n_site_visits
+[00:04:32]      -0.119  log_pop_2021
+[00:04:32]      -0.110  sig2_2_3
+[00:04:32]      +0.107  sig2_2_0
+[00:04:32]      -0.095  sig2_2_2
+[00:04:32]      +0.078  sig2_0_3
+[00:04:32]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\model_signature_results.png

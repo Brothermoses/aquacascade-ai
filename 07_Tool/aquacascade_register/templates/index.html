@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% block body %}
+<h1>Service-Line Investigation Register</h1>
+<p class="muted">Closes the loop: the model prioritizes which systems to
+investigate &rarr; you record each line here in an EPA-LCRR-compliant
+schema &rarr; export the SDWIS rollup for the state and a labeled-feedback
+file that retrains the model.</p>
+
+<div class="card">
+ <h2 style="margin-top:0">Status</h2>
+ <p>Imported service lines: <b>{{ nl }}</b><br>
+    Investigations recorded: <b>{{ ni }}</b><br>
+    Model priority loaded: <b>{{ model_loaded }}</b> systems
+    {% if not model_loaded %}<span class="muted">
+    (ranking file not found at {{ ranking_path }})</span>{% endif %}</p>
+ <a class="btn" href="/import">Import a service-line list</a>
+ &nbsp;<a class="btn" href="/worklist">Go to worklist</a>
+</div>
+
+<div class="card">
+ <h2 style="margin-top:0">How to use (v1)</h2>
+ <ol class="muted">
+  <li>Import your utility's service-line list (CSV/XLSX). Only a line-ID
+      column is required; include <code>pwsid</code> to pull in the
+      model's system priority.</li>
+  <li>Open the Worklist — lines are ordered by the model's system-level
+      priority, pending first.</li>
+  <li>Investigate each line and record the system-side and customer-side
+      material, basis, method, date. The overall LCRR classification is
+      computed automatically.</li>
+  <li>Export the SDWIS rollup (state submission) and the model-feedback
+      file (retrains/improves the model).</li>
+ </ol>
+ <p class="muted">Honest scope: prediction is <b>system-level</b>, not
+ per-line; v1 captures and exports, line-level prioritization and the
+ rehabilitation module come later. No cloud; data stays in
+ <code>./data/register.db</code>.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block body_class %}map-workspace{% endblock %}
+{% block head_extra %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+ integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+ crossorigin="">
+{% endblock %}
+{% block body %}
+<header class="map-hero">
+ <div>
+  <div class="eyebrow">SDWIS 2026 Q1 Inventory</div>
+  <h1>National service-line operations map</h1>
+  <p class="sub">Scope: {{ me.kind }}{% if me.scope_key != '*' %} / {{ me.scope_key }}{% endif %}{% if state_focus %} / State {{ state_focus }}{% endif %} - material distribution, system inventory, and street-level geographic context.</p>
+ </div>
+ <div class="map-source-card">
+  <span id="map-layer-label">Live inventory layer</span>
+  <b>OpenStreetMap</b>
+  <small>{% if state_focus %}Focused on {{ state_focus }}{% else %}roads, cities, and local context{% endif %}</small>
+ </div>
+</header>
+
+<div id="map-app" data-url="{{ data_url }}" data-state="{{ state_focus or '' }}"
+ data-tile-url="{{ tile_url }}" data-tile-attribution="{{ tile_attribution }}">
+ <div class="map-summary">
+  <div class="kpi"><b id="map-total">0</b><span id="map-total-label">Service lines</span></div>
+  <div class="kpi"><b id="map-mapped">0</b><span id="map-mapped-label">Mapped</span></div>
+  <div class="kpi"><b id="map-unmapped">0</b><span id="map-unmapped-label">Unmapped</span></div>
+  <div class="kpi"><b id="map-updated">--</b><span>Last refresh</span></div>
+ </div>
+
+ <div class="map-shell">
+  <section class="card map-card">
+   <div class="map-toolbar">
+    <div class="legend" id="map-legend"></div>
+    <div class="map-controls">
+     <select id="map-filter" aria-label="Material filter">
+      <option value="">All materials</option>
+     </select>
+     <button class="btn ghost" id="map-refresh" type="button">Refresh</button>
+    </div>
+   </div>
+   <div id="service-map" class="service-map" role="application"
+    aria-label="Interactive OpenStreetMap service-line map"></div>
+   <div class="map-note" id="map-note"></div>
+  </section>
+
+  <aside class="card map-side">
+   <h2>Map mode</h2>
+   <div id="map-mode" class="map-mode-card">Loading inventory layer...</div>
+   <h2>Data trust</h2>
+   <div class="map-trust-card">
+    <b>Real SDWIS 2026 Q1 inventory</b>
+    <span>Counts are public system-level inventory. Map points are
+     representative water-system locations from public boundary data,
+     not private pipe-by-pipe routes. Installation year, remaining
+     service life, and pipe dimensions appear only when a utility imports
+     those asset records.</span>
+   </div>
+   <h2>Material composition</h2>
+   <div id="composition-bars" class="composition-bars"></div>
+   <h2>Selected feature</h2>
+   <div id="line-detail" class="line-detail">
+    <div class="empty">No feature selected.</div>
+   </div>
+ </aside>
+ </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+ crossorigin=""></script>
+<script src="{{ url_for('static', filename='map.js') }}?v=asset-age1" defer></script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+  "n_systems": 1935,
+  "positive_rate": 0.09198966408268734,
+  "pb90_path_window": "2010-2024 yearly mean (year<=2024)",
+  "pct_systems_ge3_sampled_years": 0.8165374677002584,
+  "pct_systems_ge1_sampled_year": 0.8749354005167959,
+  "signature": "geometric/Stratonovich depth-3 of [time, PB90]",
+  "sig_dims": 14,
+  "base_lasso_selected": 15,
+  "base_plus_sig_lasso_selected": 18,
+  "base_roc_auc_mean": 0.6999181444366995,
+  "base_roc_auc_std": 0.011645773956401666,
+  "plus_pb90sig_roc_auc_mean": 0.685025547888702,
+  "plus_pb90sig_roc_auc_std": 0.009546276895582987,
+  "paired_delta_mean": -0.014892596547997372,
+  "paired_delta_std": 0.007512878371159798,
+  "pct_splits_sig_helps": 0.0,
+  "verdict": "PB90-path signature does NOT materially help the triage target (gain within CV noise / not consistent)"
+}

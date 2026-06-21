@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AquaCascade — Lead Service-Line System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+{% block head_extra %}{% endblock %}
+</head><body class="{% block body_class %}{% endblock %}">
+<div class="appbar">
+ <a class="brand" href="{{ url_for('web.dashboard') }}">
+  <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true">
+   <path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 20 0C26 14 16 2 16 2Z"
+     fill="#1C9CB5"/>
+   <path d="M16 2C16 2 6 14 6 21a10 10 0 0 0 10 10V2Z" fill="#3FB9CF"/>
+   <circle cx="16" cy="21" r="3.4" fill="#fff" opacity=".85"/>
+  </svg>
+  <span><span class="wm">AquaCascade</span>
+   <span class="tg">Lead Service-Line Operations</span></span>
+ </a>
+ <span class="spacer"></span>
+ {% set who = session.get('token') and get_principal(session.get('token')) %}
+ {% if who %}<span class="env">{{ who.un }} · {{ who.role }}</span>
+  <a class="env" style="margin-left:8px;color:#cfe0f5"
+   href="{{ url_for('web.logout') }}">Sign out</a>
+ {% else %}<a class="env" style="color:#cfe0f5"
+   href="{{ url_for('web.login') }}">Sign in</a>{% endif %}
+</div>
+{% set p = request.path %}
+<nav>
+ {% set role = who.role if who else None %}
+ {% if role in ('ADMIN','DISPATCHER') %}
+  <a class="{{ 'active' if p=='/' }}"
+     href="{{ url_for('web.dashboard') }}">Dashboard</a>
+  <a class="{{ 'active' if p.startswith('/import') }}"
+     href="{{ url_for('web.imp') }}">Import</a>
+  <a class="{{ 'active' if p.startswith('/map') }}"
+     href="{{ url_for('web.line_map') }}">Map</a>
+  <a class="{{ 'active' if p.startswith('/rehab') }}"
+     href="{{ url_for('web.rehab') }}">Rehab&nbsp;plan</a>
+ {% endif %}
+ {% if role == 'INSPECTOR' %}
+  <a class="{{ 'active' if p.startswith('/inspections') }}"
+     href="{{ url_for('web.inspections') }}">Inspections</a>
+ {% endif %}
+ {% if role == 'REHAB' %}
+  <a class="{{ 'active' if p.startswith('/replacements') }}"
+     href="{{ url_for('web.replacements') }}">Replacements</a>
+ {% endif %}
+ {% if role in ('ADMIN','DISPATCHER') %}
+  <a class="{{ 'active' if p.startswith('/register') }}"
+     href="{{ url_for('web.register_page') }}">Register</a>
+  <a class="{{ 'active' if p.startswith('/sdwis') }}"
+     href="{{ url_for('web.sdwis_page') }}">SDWIS</a>
+ {% endif %}
+ <a class="{{ 'active' if p.startswith('/guide') }}"
+    href="{{ url_for('web.guide') }}">How&nbsp;it&nbsp;works</a>
+</nav>
+<main>
+{% with msgs = get_flashed_messages() %}{% for m in msgs %}
+ <div class="flash">{{ m }}</div>{% endfor %}{% endwith %}
+{% block body %}{% endblock %}
+</main>
+<footer>
+ AquaCascade — calibrated lead service-line triage, rehabilitation and
+ post-lifespan asset renewal. Local, single-tenant, offline build;
+ nationwide multi-tenant architecture. The triage model is
+ system-level; cost, horizon and service-life are explicit assumptions,
+ not measured savings.
+</footer>
+</body></html>

@@ -1,0 +1,8 @@
+[01:04:03] Writing reproducibility manifest (hashing inputs)
+[01:04:03] Building validated target + base features
+[01:04:10]   1,935 ground-truth systems, 178 positives (9.2%), 19 features, 44 states
+[01:04:32]   (a) repeated CV  ROC-AUC 0.730 (per-repeat 0.710+/-0.007)  PR 0.217  Brier 0.079  ECE 0.024
+[01:04:36]   (b) group-by-state CV  ROC-AUC 0.572  PR 0.120  (generalisation stress test)
+[01:05:13]   (c) county ablation  base 0.710 -> +county 0.691  delta -0.0193+/-0.0094  -> county term does NOT materially help this target (kept out of production model)
+[01:05:13] Wrote triage_production_results.json + manifest
+[01:05:14]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\triage_production.png

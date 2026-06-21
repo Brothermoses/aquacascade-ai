@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% block body %}
+<h1>Worklist <span class="muted">({{ items|length }} lines)</span></h1>
+<p class="muted">Ordered by the model's system-level priority (rank 1 =
+investigate first); pending lines before completed.</p>
+{% if not items %}
+ <div class="card">No lines imported yet.
+  <a class="btn" href="/import">Import a list</a></div>
+{% else %}
+<table>
+ <tr><th>Model rank</th><th>P(lead-rich)</th><th>Line ID</th>
+  <th>PWSID</th><th>Location</th><th>Status</th><th></th></tr>
+ {% for it in items %}
+ <tr>
+  <td>{{ it.rank_disp }}</td>
+  <td>{{ it.p }}
+   {% if it.plabel!='N/A' %}<span class="pill {{ 'hi' if it.plabel=='High' else 'lo' }}">{{ it.plabel }}</span>{% endif %}</td>
+  <td>{{ it.sid }}</td><td>{{ it.pwsid }}</td><td>{{ it.loc }}</td>
+  <td>{% if it.done %}<b>{{ it.status }}</b>{% else %}
+   <span class="muted">Pending</span>{% endif %}</td>
+  <td><a class="btn" href="/investigate/{{ it.id }}">
+   {{ 'Edit' if it.done else 'Investigate' }}</a></td>
+ </tr>{% endfor %}
+</table>
+{% endif %}
+{% endblock %}

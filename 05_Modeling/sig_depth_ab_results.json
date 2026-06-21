@@ -1,0 +1,33 @@
+{
+  "baseline_pr_auc": 0.19564791601378878,
+  "n_systems": 51056,
+  "cv": "RepeatedStratifiedKFold 5x5 (25 paired splits)",
+  "A_depth2_sig": {
+    "sig_features": 20,
+    "lasso_selected": 30,
+    "roc_auc_mean": 0.6753289340974769,
+    "roc_auc_std": 0.005552684427291445,
+    "delta_vs_depth2_mean": 0.0,
+    "delta_vs_depth2_std": 0.0,
+    "pct_splits_beating_depth2": 0.0
+  },
+  "B_depth3_sig": {
+    "sig_features": 84,
+    "lasso_selected": 66,
+    "roc_auc_mean": 0.6818177063271159,
+    "roc_auc_std": 0.005693132866609614,
+    "delta_vs_depth2_mean": 0.00648877222963915,
+    "delta_vs_depth2_std": 0.0025900661741155863,
+    "pct_splits_beating_depth2": 1.0
+  },
+  "C_depth3_logsig": {
+    "sig_features": 84,
+    "lasso_selected": 90,
+    "roc_auc_mean": 0.6735758834519049,
+    "roc_auc_std": 0.005071491121004866,
+    "delta_vs_depth2_mean": -0.0017530506455718075,
+    "delta_vs_depth2_std": 0.003296956620470543,
+    "pct_splits_beating_depth2": 0.24
+  },
+  "verdict": "depth-3 robustly justified"
+}

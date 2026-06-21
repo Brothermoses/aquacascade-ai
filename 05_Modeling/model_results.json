@@ -1,0 +1,77 @@
+{
+  "data": "Water System Summary 2013Q1-2021Q4 (36 real quarters)",
+  "target": "health-based SDWA violation, non-compliance >= 2022",
+  "temporal_split": "predictors <=2021Q4 strictly before target >=2022",
+  "signature": "geometric/Stratonovich, depth 3 (time-augmented)",
+  "signature_choices_evidence": "depth: depth-3 beats depth-2 by +0.0065 ROC over 25 paired CV splits (100% of splits); calculus: Ito vs Stratonovich indistinguishable (+0.0001 paired), Stratonovich kept on shuffle/reparam-invariance grounds",
+  "n_systems": 51056,
+  "n_features_total": 100,
+  "n_features_selected": 66,
+  "positive_rate": 0.19564791601378878,
+  "cv_roc_auc": 0.6825010640737855,
+  "cv_pr_auc": 0.357258716389787,
+  "baseline_pr_auc": 0.19564791601378878,
+  "supersedes": "prior 5-quarter SLI version (ROC-AUC 0.727, had temporal-ordering flaw)",
+  "top_lasso_features": [
+    [
+      "sig3_3_2_3",
+      -0.2539170098357806
+    ],
+    [
+      "sig3_0_2_0",
+      0.24612575374413437
+    ],
+    [
+      "n_signif_defic",
+      0.24243175037302134
+    ],
+    [
+      "sig3_0_0_3",
+      0.1656956626171865
+    ],
+    [
+      "sig3_3_0_0",
+      0.15951499937614325
+    ],
+    [
+      "sig3_2_2_2",
+      -0.13094794610387103
+    ],
+    [
+      "log_conns",
+      -0.13007247683940779
+    ],
+    [
+      "n_site_visits",
+      0.11865422289626115
+    ],
+    [
+      "log_pop_2021",
+      -0.11394497482672968
+    ],
+    [
+      "sig3_0_3_0",
+      -0.1106529866625127
+    ],
+    [
+      "sig3_2_3_0",
+      -0.10340396841083514
+    ],
+    [
+      "sig3_3_0_3",
+      -0.09936039874082725
+    ],
+    [
+      "sig3_0_0_2",
+      -0.08221330939523323
+    ],
+    [
+      "sig3_1_1_1",
+      0.08001268455396357
+    ],
+    [
+      "src_SW",
+      0.07908621697947968
+    ]
+  ]
+}

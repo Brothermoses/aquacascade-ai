@@ -1,0 +1,17 @@
+[18:24:28] Loading SLI 2025Q1 vs 2026Q1 (Community, Active)
+[18:24:28]   community systems in both quarters: 49,035
+[18:24:28]   systems that buy wholesale water: 13,781
+[18:24:36] trajectory: loading cache cache_trajectory.parquet
+[18:24:36]   trajectory features joined: 20 cols, 100% of systems matched
+[18:24:36]   ground-truth systems (resolved >= 10): 1,935;  positive (lead-rich unknowns): 9.2%
+[18:24:40]   triage model (base)          CV ROC-AUC 0.738  PR-AUC 0.236  (baseline 0.092)
+[18:24:40]   + long-run trajectory layer  CV ROC-AUC 0.730  PR-AUC 0.234  -> delta ROC -0.008 (rejected: no lift)
+[18:24:41] RESULTS
+[18:24:41]   triage model: CV ROC-AUC 0.738, PR-AUC 0.236 (base 0.092) on 1,935 real ground-truth systems
+[18:24:41]   -- honest test on held-out (oof) systems, REAL lead found --
+[18:24:41]   spend to find 80% of real lead - model:        $381.5M
+[18:24:41]   spend to find 80% of real lead - most-unknowns: $397.1M
+[18:24:41]   triage vs naive: 3.9% less investigation spend for the same REAL lead discovered
+[18:24:41]   model top-10% of systems captures 38% of all real lead found
+[18:24:41]   national context: 14,113 systems / 22,524,792 unknown lines still unresolved; projected model-estimated hidden lead 2.4M lines ($4.5B to investigate)
+[18:24:41]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\unknown_triage_results.png

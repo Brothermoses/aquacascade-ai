@@ -1,0 +1,11 @@
+service_line_id,pwsid,address,latitude,longitude,geometry,install_year,current_status,expected_service_life_years,replacement_year,diameter_in,length_ft,ownership_side,verification_method,evidence_source,confidence_score
+SL-0001,IL0430800,101 Maple St,39.7817,-89.6501,"LINESTRING(-89.6512 39.7811,-89.6496 39.7822)",1962,Unknown,75,,0.75,46,Utility,Records / historical review,tap card,0.82
+SL-0002,IL0430800,103 Maple St,39.7822,-89.6486,"LINESTRING(-89.6492 39.7817,-89.6478 39.7828)",1958,Unknown,75,,0.75,43,Utility,Records / historical review,tap card,0.80
+SL-0003,IL0430800,210 Oak Ave,39.7840,-89.6520,"LINESTRING(-89.6529 39.7834,-89.6509 39.7846)",1991,Unknown,90,,1.00,58,Utility,As-built review,as-built plan,0.74
+SL-0004,IL0310450,12 River Rd,41.8781,-87.6298,"LINESTRING(-87.6308 41.8776,-87.6288 41.8786)",1949,Unknown,75,,0.75,37,Utility,Records / historical review,tap card,0.78
+SL-0005,IL0310450,14 River Rd,41.8790,-87.6280,"LINESTRING(-87.6290 41.8785,-87.6272 41.8794)",1972,Unknown,75,,0.75,41,Utility,Records / historical review,meter card,0.70
+SL-0006,ND3700314,500 Elm Dr,46.8083,-100.7837,"LINESTRING(-100.7848 46.8077,-100.7826 46.8089)",1985,Unknown,90,,1.00,61,Utility,As-built review,as-built plan,0.76
+SL-0007,KY0920181,77 Birch Ln,38.2527,-85.7585,"LINESTRING(-85.7596 38.2521,-85.7575 38.2533)",1955,Unknown,75,,0.75,40,Utility,Records / historical review,tap card,0.81
+SL-0008,KY0920181,79 Birch Ln,38.2535,-85.7568,"LINESTRING(-85.7578 38.2530,-85.7559 38.2540)",2003,Unknown,90,,1.00,54,Utility,As-built review,as-built plan,0.73
+SL-0009,OH6801612,8 Pine Ct,39.9612,-82.9988,"LINESTRING(-82.9999 39.9607,-82.9978 39.9618)",1968,Unknown,75,,0.75,44,Utility,Records / historical review,meter card,0.79
+SL-0010,OH6801612,9 Pine Ct,39.9620,-82.9972,"LINESTRING(-82.9982 39.9615,-82.9962 39.9625)",1947,Unknown,75,,0.75,39,Utility,Records / historical review,tap card,0.84

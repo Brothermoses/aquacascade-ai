@@ -1,0 +1,48 @@
+{% extends "base.html" %}{% block body %}
+<header class="page-hero">
+ <div>
+  <div class="eyebrow">Operating model</div>
+  <h1>How AquaCascade works</h1>
+  <p class="sub">A clear chain from national prioritization to utility
+   imports, field confirmation, rehabilitation planning, and long-term
+   asset renewal.</p>
+ </div>
+</header>
+
+<section class="process-flow">
+ <div class="process-card"><span>01</span><h2>National Prioritization</h2>
+  <p>A model trained on EPA data ranks water systems by the likelihood
+   that unknown service lines are lead-rich. This is a system-level
+   signal, not a per-pipe claim.</p></div>
+ <div class="process-card"><span>02</span><h2>Utility Inventory</h2>
+  <p>Utilities import their own private service-line records. Location
+   and geometry stay explicit: the system never invents pipe routes.</p></div>
+ <div class="process-card"><span>03</span><h2>Inspection Queue</h2>
+  <p>Inspectors receive only inspection work, ordered by priority, and
+   record LCRR-compliant evidence from any device.</p></div>
+ <div class="process-card"><span>04</span><h2>Rehab Queue</h2>
+  <p>Confirmed Lead and GRR records flow into replacement planning and
+   create work orders for replacement crews.</p></div>
+ <div class="process-card"><span>05</span><h2>Compliance Exports</h2>
+  <p>Results roll into the register, SDWIS view, model-feedback file,
+   and rehabilitation plan exports.</p></div>
+ <div class="process-card"><span>06</span><h2>Post-Lead Renewal</h2>
+  <p>After lead is removed, the same workflow flags aged non-lead assets
+   for long-term renewal.</p></div>
+</section>
+
+<section class="card">
+ <h2>Role Separation</h2>
+ <div class="role-strip">
+  <div><span class="badge b-insp">INSPECTION</span>
+   <b>Inspectors</b><p class="muted">Only see unknown-line confirmation
+    work.</p></div>
+  <div><span class="badge b-rehab">REHAB / RENEWAL</span>
+   <b>Replacement crews</b><p class="muted">Only see replacement and
+    renewal work.</p></div>
+  <div><span class="badge b-open">DISPATCH</span>
+   <b>Dispatcher / Admin</b><p class="muted">See the operational command
+    center, imports, maps, plans, and exports.</p></div>
+ </div>
+</section>
+{% endblock %}
