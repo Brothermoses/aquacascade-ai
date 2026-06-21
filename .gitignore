@@ -10,7 +10,9 @@ __pycache__/
 *.log
 *.tmp
 api_key.txt
+07_Tool/aquacascade_system/data/
 07_Tool/aquacascade_system/data/aquacascade.db*
+07_Tool/aquacascade_system/data/secret_key.txt
 
 # Office lock files
 ~$*

@@ -16,15 +16,12 @@ operational system's footer and on every report.
 
 | Folder | Purpose |
 |---|---|
-| `04_Submission/` | The Stage 2 progress narrative + **the Experiment Logs** (1–3 so far) in Markdown and Word |
-| `05_Modeling/` | All modeling code + result JSONs + reproducibility manifests |
-| `03_Outputs/Charts/` | Every chart that appears in the reports / deck |
-| `06_Reports/` | Detailed methods log, stepwise method, investigation-tool analysis, rehab analysis, the slide deck |
+| `04_Submission/` | The Stage 2 progress narrative and **the Experiment Logs** (1–3 so far) |
+| `05_Modeling/` | The modeling scripts each Experiment Log cites + their result JSONs + the reproducibility manifest |
+| `03_Outputs/Charts/` | The charts referenced by the Experiment Logs |
+| `06_Reports/` | `A_Methods_Decision_Log.md` (decision narrative cited by Logs #01 and #02) and `B_Final_Method_Stepwise.md` (cited by Log #03) |
 | `07_Tool/aquacascade_system/` | The operational system (REST API + DB + multi-tenant pipeline + role-separated technician UI + automated tests) |
 | `01_Raw_Data/README.md` | Re-download links for the public EPA data the modeling consumes (data itself is not in the repo — too large) |
-
-The folder is organised by stage in the pipeline:
-`Raw EPA data → Modeling → Outputs → Reports → Submission → Tool`.
 
 ---
 
@@ -55,7 +52,7 @@ the result.
 - `07_Tool/aquacascade_system/` (the operational system that consumes
   the validated model)
 
-`05_Modeling/unknown_triage_ranking.csv` is the national priority list
+`05_Modeling/triage_production_ranking.csv` is the national priority list
 the model produces: PWSID, model rank, lead-rich probability.
 
 ---

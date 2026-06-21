@@ -1,5 +1,0 @@
-[00:46:21] Loading raw WSS 2013-2021 series per system
-[00:46:30]   logpop  n=29,521  phi_level~0.917  phi_incr~-0.030  VR4~0.99  Hurst~0.95
-[00:46:32]   nfac    n=24,507  phi_level~0.933  phi_incr~-0.030  VR4~0.99  Hurst~0.96
-[00:46:36]   cumsv   n=50,748  phi_level~0.955  phi_incr~-0.097  VR4~0.75  Hurst~0.98
-[00:46:44]   figure -> C:\Users\moise\Documents\Texas A&M University Competition\03_Outputs\Charts\process_diagnostics.png
