@@ -83,7 +83,17 @@ The headline finding I was tempted to brag about (an early run showed +0.040 ROC
 The *content* of the signature is settled; what is **not** settled is the **target generalization** — see Log #03 for the production-grade triage validation that surfaced the state-generalization limit.
 
 ## Verifiable artifacts
-- `05_Modeling/sig_depth_ab.py` + `sig_depth_ab_results.json` + `03_Outputs/Charts/sig_depth_ab.png`
-- `05_Modeling/sig_calculus_ab.py` + `sig_calculus_ab_results.json` + `03_Outputs/Charts/sig_calculus_ab.png`
-- `05_Modeling/signature_pipeline.py` (canonical pipeline — `signatures_ex(depth=3, calculus="strat")` is now the default)
-- `06_Reports/A_Methods_Decision_Log.md` §5–6 (decision narrative)
+
+Public repository: **https://github.com/Brothermoses/aquacascade-ai**
+
+- Depth A/B (script + JSON + chart):
+  https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/sig_depth_ab.py
+  · https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/sig_depth_ab_results.json
+  · https://github.com/Brothermoses/aquacascade-ai/blob/main/03_Outputs/Charts/sig_depth_ab.png
+- Itô vs Stratonovich A/B (script + JSON + chart):
+  https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/sig_calculus_ab.py
+  · https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/sig_calculus_ab_results.json
+  · https://github.com/Brothermoses/aquacascade-ai/blob/main/03_Outputs/Charts/sig_calculus_ab.png
+- Canonical pipeline (`signatures_ex(depth=3, calculus="strat")` default):
+  https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/signature_pipeline.py
+- Decision narrative: https://github.com/Brothermoses/aquacascade-ai/blob/main/06_Reports/A_Methods_Decision_Log.md (sections 5–6)

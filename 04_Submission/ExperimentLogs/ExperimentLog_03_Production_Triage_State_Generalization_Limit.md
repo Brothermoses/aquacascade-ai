@@ -66,9 +66,12 @@ The complete production pipeline — calibrated model, the three-scheme validati
 **Pre-registered:** a **hierarchical / per-state-calibrated** model on the triage target. Success criterion fixed in advance — group-by-state ROC materially above 0.57 (target ≥ 0.65 with proper paired CV). Will be Experiment Log #04 once executed.
 
 ## Verifiable artifacts
-- `05_Modeling/triage_production.py` (production model + 3-scheme validation)
-- `05_Modeling/triage_production_results.json` (all metrics above)
-- `05_Modeling/triage_production_manifest.json` (input SHA-256, versions, seed)
-- `03_Outputs/Charts/triage_production.png` (calibration / PR / lift)
-- `07_Tool/aquacascade_system/` (operational system consuming the model)
-- `06_Reports/B_Final_Method_Stepwise.md` (full step-by-step) and `04_Submission/Stage2_Progress_AquaCascade.md`
+
+Public repository: **https://github.com/Brothermoses/aquacascade-ai**
+
+- Production model + 3-scheme validation: https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/triage_production.py
+- All metrics above (JSON): https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/triage_production_results.json
+- Reproducibility manifest (input SHA-256, library versions, seed): https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/triage_production_manifest.json
+- Charts (calibration / PR / lift): https://github.com/Brothermoses/aquacascade-ai/blob/main/03_Outputs/Charts/triage_production.png
+- Operational system consuming the model: https://github.com/Brothermoses/aquacascade-ai/tree/main/07_Tool/aquacascade_system
+- Full step-by-step + Stage 2 progress doc: https://github.com/Brothermoses/aquacascade-ai/blob/main/06_Reports/B_Final_Method_Stepwise.md · https://github.com/Brothermoses/aquacascade-ai/blob/main/04_Submission/Stage2_Progress_AquaCascade.md

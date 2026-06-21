@@ -59,8 +59,11 @@ We discovered (and avoided shipping) a framing that *sounded* technically sophis
 A **hierarchical / per-state-calibrated** model on the new (unknown-line triage) target, falsifiable in advance: success means group-by-state ROC materially above the cold-start baseline. (See Log #03 for why this experiment is the natural next step.)
 
 ## Verifiable artifacts
-- `05_Modeling/polygon_cascade.py` (engine and CV)
-- `05_Modeling/polygon_results.json` (exact numbers above)
-- `05_Modeling/spatial_cascade.py` and `spatial_results.json` (county comparison)
-- `03_Outputs/Charts/polygon_cascade_results.png` (visual)
-- `06_Reports/A_Methods_Decision_Log.md` §1–2 (decision narrative)
+
+Public repository: **https://github.com/Brothermoses/aquacascade-ai**
+
+- Engine + CV: https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/polygon_cascade.py
+- Exact numbers above (JSON): https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/polygon_results.json
+- County counter‑experiment: https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/spatial_cascade.py and https://github.com/Brothermoses/aquacascade-ai/blob/main/05_Modeling/spatial_results.json
+- Chart: https://github.com/Brothermoses/aquacascade-ai/blob/main/03_Outputs/Charts/polygon_cascade_results.png
+- Decision narrative: https://github.com/Brothermoses/aquacascade-ai/blob/main/06_Reports/A_Methods_Decision_Log.md (sections 1–2)
