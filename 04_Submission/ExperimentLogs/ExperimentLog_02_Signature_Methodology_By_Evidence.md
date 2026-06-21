@@ -11,7 +11,7 @@
 
 ## Assumption tested
 
-Two design choices at the heart of the venture's mathematical centerpiece (the path-signature transform that linearizes per-system nonlinear trajectories) were inherited from my FAA work as defaults:
+Two design choices at the heart of the venture's mathematical centerpiece (the path-signature transform that linearizes per-system nonlinear trajectories) were carried in as defaults from prior rough-path-theory work:
 
 1. **Truncation depth = 2** ("depth-2 should be enough; depth-3 quadruples dimensionality").
 2. **Geometric / Stratonovich** convention ("standard in the signature literature; Itô would not make a real difference on observed paths").

@@ -19,7 +19,7 @@ The final venture method is **Track 2, production-hardened** (Section 9). Track 
 
 ## 2. Inter-utility cascade — true service-area polygon adjacency
 
-- **Idea:** the legitimate version of the cascade thesis — connect systems whose service-area polygons physically touch (EPA boundary GIS), then propagate risk multi-hop (Katz, the FAA/NEXTOR operator).
+- **Idea:** the legitimate version of the cascade thesis — connect systems whose service-area polygons physically touch (EPA boundary GIS), then propagate risk multi-hop (Katz network-centrality operator).
 - **Result (GIS-covered subset, 3,591 systems, 2,289 edges):** only **52.5%** of systems have any neighbor (mean degree 1.27). 1-hop neighbor risk added **+0.006 ROC** (noise). Multi-hop Katz **hurt** (0.827 → 0.782). *(`polygon_results.json`)*
 - **Decision: REJECTED.** Separate public water systems are geographically isolated entities, not a connected pipe network. The data refutes inter-utility physical cascade. This rejection is itself a key finding.
 

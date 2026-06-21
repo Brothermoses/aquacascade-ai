@@ -4,7 +4,7 @@ AquaCascade AI - TRUE polygon-adjacency cascade (REAL EPA GIS data).
 Upgrades the spatial layer from county clusters to a real adjacency network:
 two water systems are neighbours iff their service-area POLYGONS touch /
 nearly touch (System_Area_Boundary_Layer, SABL_PWSID). This is a connected
-graph, so multi-hop Katz propagation (the FAA/NEXTOR operator) is meaningful.
+graph, so multi-hop Katz propagation (a standard network-centrality operator) is meaningful.
 
 Coverage is a regional subset (the boundary layer is mostly California,
 ~5k polygons) -> results are reported on the GIS-covered subset only, with

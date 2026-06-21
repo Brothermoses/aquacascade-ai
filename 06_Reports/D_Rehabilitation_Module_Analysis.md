@@ -6,7 +6,7 @@ turns the confirmed lead + galvanized-requiring-replacement (GRR) lines
 into a **multi-year, budget-constrained replacement plan** that meets the
 LCRI deadline and the LCRI equity requirement.
 
-This is the IP-clean transfer of the FAA/NEXTOR capital-allocation method:
+The module is a standard multi-period capital-allocation formulation:
 criticality × cost, scheduled over multiple periods under a budget,
 equity, and deadline constraint.
 
@@ -73,7 +73,7 @@ the naive "oldest/most-exposed first" and "as-found order" baselines.
 ## 5. What we have vs. need
 
 **Have:** register export (confirmed lines + disadvantaged flag +
-install year + cost field); the FAA scheduling method; the Census-linked
+install year + cost field); the scheduling formulation above; the Census-linked
 boundaries (optional later equity enrichment); the honest cost
 assumptions already used in `lsl_optimizer.py`.
 

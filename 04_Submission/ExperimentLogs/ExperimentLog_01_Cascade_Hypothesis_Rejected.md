@@ -11,13 +11,13 @@
 
 ## Assumption tested
 
-That risk in water-utility infrastructure **cascades across utilities** the way it does in air-traffic control networks (the framing I brought from my FAA NEXTOR research), and that a Katz-style multi-hop network propagation model on a real adjacency graph would produce a defensible nationwide risk product.
+That risk in water-utility infrastructure **cascades across utilities** through their physical service-area adjacency, and that a Katz-style multi-hop network propagation model on a real adjacency graph would produce a defensible nationwide risk product.
 
 ## Method (what we did)
 
 1. Built the per-system signature risk model on real EPA SDWA data and confirmed the base predictive signal (51,056 community water systems; out-of-fold CV ROC-AUC 0.683, leakage-corrected).
 2. Constructed the **true polygon-adjacency graph** of U.S. community water systems from EPA's Service Area Boundary Layer (4,993 polygons, GIS, geopandas + STRtree spatial index).
-3. Tested the cascade hypothesis end-to-end on the same training data: leakage-safe 1-hop neighbor-risk feature, then multi-hop **Katz propagation** (α=0.4, 6 hops) — the exact operator from my FAA work, transferred IP-clean.
+3. Tested the cascade hypothesis end-to-end on the same training data: leakage-safe 1-hop neighbor-risk feature, then multi-hop **Katz propagation** (α=0.4, 6 hops) — a standard network-centrality operator.
 4. Compared against a non-cascade alternative (a leakage-safe **county regional-risk** term computed from training labels only, per fold).
 
 ## Evidence gathered
@@ -38,7 +38,7 @@ Separate public water systems are **geographically isolated entities**, not a co
 
 ## Decision
 
-**Reject the inter-utility cascade framing.** Keep the county regional-risk feature as a legitimate auxiliary signal but stop calling it "cascade." Pivot the venture to the bottleneck the EPA data actually supports: the **22.5 million "lead-status-unknown" service lines** mandated by EPA's Lead and Copper Rule Improvements (LCRI) — a real, unsolved national prioritization problem with public ground truth (the SDWIS service-line inventory) where the FAA criticality/scheduling methodology transfers IP-clean.
+**Reject the inter-utility cascade framing.** Keep the county regional-risk feature as a legitimate auxiliary signal but stop calling it "cascade." Pivot the venture to the bottleneck the EPA data actually supports: the **22.5 million "lead-status-unknown" service lines** mandated by EPA's Lead and Copper Rule Improvements (LCRI) — a real, unsolved national prioritization problem with public ground truth (the SDWIS service-line inventory) where a calibrated criticality-and-scheduling formulation applies cleanly.
 
 ## How the venture changed
 

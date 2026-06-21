@@ -16,7 +16,7 @@ Honest training signal (no synthetic data):
 
 Network layer: real wholesale Buyer->Seller relationships (EPA SAB repo). A
 seller's lead profile is propagated (Katz) to its downstream buyers - the
-legitimate, data-backed version of the FAA/NEXTOR network-criticality method.
+legitimate, data-backed application of network-criticality propagation.
 
 Leakage control: every feature is knowable BEFORE resolution (system
 attributes, q0 composition, historical lead samples/violations, seller q0

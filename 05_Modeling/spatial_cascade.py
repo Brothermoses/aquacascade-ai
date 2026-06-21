@@ -16,7 +16,7 @@ Method (leakage-safe):
      only (leave-one-out for train rows), add it as ONE feature, and measure
      whether out-of-fold AUC improves vs the base model. Same folds both ways.
   4. Spatial-autocorrelation statistic (Moran-like) on base-model residuals.
-  5. Katz propagation (the FAA/NEXTOR operator) over the county graph applied
+  5. Katz propagation (a standard network-centrality operator) over the county graph applied
      to base risk scores -> network-amplified priority ranking (illustrative).
 
 No synthetic data, no fabricated metrics.
@@ -137,8 +137,8 @@ def cv_oof(X, y, folds):
 
 
 def katz(M, seed, alpha=0.4, hops=6):
-    """Bipartite Katz-style propagation through county hubs (FAA/NEXTOR
-    operator). r <- (1-a) seed + a * row-norm(M M^T, no self) r."""
+    """Bipartite Katz-style propagation through county hubs.
+    r <- (1-a) seed + a * row-norm(M M^T, no self) r."""
     deg = np.asarray(M.sum(axis=1)).ravel()
     deg[deg == 0] = 1
     r = seed.copy()

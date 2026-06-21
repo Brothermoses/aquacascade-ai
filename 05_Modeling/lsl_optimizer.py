@@ -6,7 +6,7 @@ US community water system to replace all lead + galvanized-requiring-
 replacement service lines on a ~10-year horizon, prioritizing the highest
 public-health exposure. Budgets are finite -> which lines first?
 
-This is the FAA/NEXTOR capital-allocation method transferred IP-clean:
+Approach is a standard criticality-weighted capital-allocation formulation:
   replacement-need (count)  x  health-exposure criticality  /  cost
 ranked under a budget, vs. the heuristics utilities actually use today.
 
